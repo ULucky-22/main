@@ -1,0 +1,77 @@
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  border: 1px black solid;
+}
+
+td {
+  position: relative;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+}
+
+td img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 30px;
+  height: 30px;
+  border: 1px black solid;
+}
+
+.main {
+  justify-content: center;
+  display: flex;
+}
+
+.front {
+  z-index: 1;
+}
+
+.back {
+  z-index: 0;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+.scoreBoard {
+  text-align: center;
+  color: aqua;
+  margin: 0.1vw;
+  padding: 0.1vw;
+  border: 0.1vw solid black;
+  height: auto;
+  width: 4vw;
+  
+}
+
+.scoreBoard img {
+  width: 3.5vw;
+}
+
+.profile {
+  border: 0.2vw solid black;
+}
+
+#score1 {
+  background-color: red;
+}
+#score2 {
+  background-color: blue;
+}
+#debug {
+  color: white;
+}
+
+#debug:hover {
+  color: black;
+}
+
+#devClock p {
+  margin: 0;
+}

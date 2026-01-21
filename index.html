@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="title">Monster Tiles Sandbox</title>
+    <script src="script.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body onload="onload()">
+    <div id="title" class="center"><h1>Monster Tiles Sandbox</h1></div>
+    <div id="alert" class="center" style="background-color: yellow;"></div>
+    <div id="main" class="center">
+        <div>
+            <div>
+                <table style="border: 0px;">
+                    <tr style="border: 0px;">
+                        <td><img src="assets/blank.png" style="border: 0px;""></td>
+                        <td><img src="assets/blank.png" style="border: 0px;""></td>
+                        <td><img src="assets/blank.png" style="border: 0px;""></td>
+                        <td><img src="assets/blank.png" style="border: 0px;""></td>
+                        <td><img src="assets/blank.png" style="border: 0px;""></td>
+                        <td><img src="assets/blank.png" style="border: 0px;""></td>
+                        <td><img src="assets/blank.png" style="border: 0px;""></td>
+                        <td><img src="assets/blank.png" style="border: 0px;""></td>
+                    </tr>
+                </table>
+            </div>
+        </div>      
+        <div id="board"></div>
+        <div>
+            <div>
+                <p>Drawmode</p>
+                <table>
+                    Tool:
+                    <tr>
+                        <td><img id="drawIcon" src="assets/drawmode/draw.png" onclick="setTool('draw')"></td>
+                        <td><img id="eraseIcon" src="assets/drawmode/erase.png" onclick="setTool('erase')"></td>
+                        <td><img id="inputIcon" src="assets/drawmode/input.png" onclick="setTool('input')"></td>
+                        <td><img id="flipIcon" src="assets/drawmode/flipA.png" onclick="flipper()"></td>
+                    </tr>
+                </table>
+                <table>
+                    Mode:
+                    <tr>
+                        <td><img id="clickIcon" src="assets/drawmode/click.png" onclick="setMode('click')"></td>
+                        <td><img id="hoverIcon" src="assets/drawmode/hover.png" onclick="setMode('hover')"></td>
+                        <td><img id="bucketIcon" src="assets/drawmode/bucket.png" onclick="setMode('bucket')"></td>
+                    </tr>
+                </table>
+                <table>
+                    Shape:
+                    <tr>
+                        <td><img id="dotIcon" src="assets/drawmode/dot.png" onclick="setShape('dot')"></td>
+                        <td><img id="dotMidIcon" src="assets/drawmode/dotMid.png" onclick="setShape('dotMid')"></td>
+                        <td><img id="dotMaxIcon" src="assets/drawmode/dotMax.png" onclick="setShape('dotMax')"></td>
+                        <td><img id="hLineIcon" src="assets/drawmode/hLine.png" onclick="setShape('hLine')"></td>
+                        <td><img id="vLineIcon" src="assets/drawmode/vLine.png" onclick="setShape('vLine')"></td>
+                        <td><img id="crossIcon" src="assets/drawmode/tCross.png" onclick="setShape('tCross')"></td>
+                        <td><img id="dLineAIcon" src="assets/drawmode/dLineA.png" onclick="setShape('dLineA')"></td>
+                        <td><img id="dLineBIcon" src="assets/drawmode/dLineB.png" onclick="setShape('dLineB')"></td>
+                    </tr>
+                    <tr>
+                        <td><img id="xCrossIcon" src="assets/drawmode/xCross.png" onclick="setShape('xCross')"></td>
+                        <td><img id="boxIcon" src="assets/drawmode/box.png" onclick="setShape('box')"></td>
+                        <td><img id="" src="assets/blank.png" onclick="setShape('')"></td>
+                        <td><img id="" src="assets/blank.png" onclick="setShape('')"></td>
+                        <td><img id="" src="assets/blank.png" onclick="setShape('')"></td>
+                        <td><img id="" src="assets/blank.png" onclick="setShape('')"></td>
+                        <td><img id="" src="assets/blank.png" onclick="setShape('')"></td>
+                        <td><img id="" src="assets/blank.png" onclick="setShape('')"></td>
+                    </tr>
+                </table>
+                <table>
+                    Input Tile:
+                    <tr>
+                        <td><img id="redMonsterIcon" src="assets/redMonsterDown.png" onclick="addPlayer1()"></td>
+                        <td><img id="blueMonsterIcon" src="assets/blueMonsterDown.png" onclick="addPlayer2()"></td>
+                        <td><img id="greenMonsterIcon" src="assets/greenMonsterDown.png" onclick="addBot()"></td>
+                        <td><img id="chestIcon" src="assets/chest.png" onclick="setInputTile('assets/chest.png')"></td>
+                        <td><img id="goldChestIcon" src="assets/goldChest.png" onclick="setInputTile('assets/goldChest.png')"></td>
+                        <td><img id="keyIcon" src="assets/key.png" onclick="setInputTile('assets/key.png')"></td>
+                        <td><img id="heartKeyIcon" src="assets/heartKey.png" onclick="setInputTile('assets/heartKey.png')"></td>
+                        <td><img id="scrollIcon" src="assets/scroll.png" onclick="setInputTile('assets/scroll.png')"></td>
+                    </tr>
+                    <tr>
+                        <td><img id="coinsIcon" src="assets/coins.png" onclick="setInputTile('assets/coins.png')"></td>
+                        <td><img id="potionIcon" src="assets/potion.png" onclick="setInputTile('assets/potion.png')"></td>
+                        <td><img id="invisibilityIcon" src="assets/invisibility.png" onclick="setInputTile('assets/invisibility.png')"></td>
+                        <td><img id="appleIcon" src="assets/food/apple.png" onclick="setInputTile('assets/food/apple.png')"></td>
+                        <td><img id="bananaIcon" src="assets/food/banana.png" onclick="setInputTile('assets/food/banana.png')"></td>
+                        <td><img id="cherryIcon" src="assets/food/cherry.png" onclick="setInputTile('assets/food/cherry.png')"></td>
+                        <td><img id="grapeIcon" src="assets/food/grape.png" onclick="setInputTile('assets/food/grape.png')"></td>
+                        <td><img id="kiwiIcon" src="assets/food/kiwi.png" onclick="setInputTile('assets/food/kiwi.png')"></td>
+                    </tr>
+                    <tr>
+                        <td><img id="lemonIcon" src="assets/food/lemon.png" onclick="setInputTile('assets/food/lemon.png')"></td>
+                        <td><img id="limeIcon" src="assets/food/lime.png" onclick="setInputTile('assets/food/lime.png')"></td>
+                        <td><img id="mangoIcon" src="assets/food/mango.png" onclick="setInputTile('assets/food/mango.png')"></td>
+                        <td><img id="orangeIcon" src="assets/food/orange.png" onclick="setInputTile('assets/food/orange.png')"></td>
+                        <td><img id="papayaIcon" src="assets/food/papaya.png" onclick="setInputTile('assets/food/papaya.png')"></td>
+                        <td><img id="pearIcon" src="assets/food/pear.png" onclick="setInputTile('assets/food/pear.png')"></td>
+                        <td><img id="pineappleIcon" src="assets/food/pineapple.png" onclick="setInputTile('assets/food/pineapple.png')"></td>
+                        <td><img id="rambutanIcon" src="assets/food/rambutan.png" onclick="setInputTile('assets/food/rambutan.png')"></td>
+                    </tr>
+                    <tr>
+                        <td><img id="soursopIcon" src="assets/food/soursop.png" onclick="setInputTile('assets/food/soursop.png')"></td>
+                        <td><img id="starfruitIcon" src="assets/food/starfruit.png" onclick="setInputTile('assets/food/starfruit.png')"></td>
+                        <td><img id="strawberryIcon" src="assets/food/strawberry.png" onclick="setInputTile('assets/food/strawberry.png')"></td>
+                        <td><img id="watermelonIcon" src="assets/food/watermelon.png" onclick="setInputTile('assets/food/watermelon.png')"></td>
+                        <td><img id="" src="assets/blank.png" onclick="setInputTile('a')"></td>
+                        <td><img id="" src="assets/blank.png" onclick="setInputTile('')"></td>
+                        <td><img id="" src="assets/blank.png" onclick="setInputTile('')"></td>
+                        <td><img id="" src="assets/blank.png" onclick="setInputTile('')"></td>
+                    </tr>
+                </table>
+                <div><button onclick="devTools()"></button><div id="devTools" class="center"></div></div>
+            </div>
+        </div>
+    </div>
+    <div id="debug" class="center"></div>
+    <div id="toolbox" class="center"></div>
+    <div id="styles" class="center"><input type="color" id="colorPicker" name="colorPicker" value="#000000"></div>
+    <div class="center" style="display: block"><span id="test"><button onclick="runTest()">Run Test</button><button onclick="loadGame()">Load Game</button><button onclick="saveGame()">Save Game</button></span></div>
+    <div class="center">
+        <div id="score1" class="scoreBoard"><img id="score1img" class="profile" src="assets/redMonsterDown.png" onmouseover="boo()" onmouseout="stopBoo()"><span><b><u>Player 1</u></b></span><br><span id="result1">0</span></div>
+        <div id="inventory1">
+            <p>Player 1 Inventory</p>
+            <table>
+                <tr>
+                    <td><img id="p1_0c" class="front" src="assets/blank.png"><img id="p1_0i" class="back" src="assets/blank.png"></td>
+                    <td><img id="p1_1c" class="front" src="assets/blank.png"><img id="p1_1i" class="back" src="assets/blank.png"></td>
+                    <td><img id="p1_2c" class="front" src="assets/blank.png"><img id="p1_2i" class="back" src="assets/blank.png"></td>
+                    <td><img id="p1_3c" class="front" src="assets/blank.png"><img id="p1_3i" class="back" src="assets/blank.png"></td>
+                    <td><img id="p1_4c" class="front" src="assets/blank.png"><img id="p1_4i" class="back" src="assets/blank.png"></td>
+                    <td><img id="p1_5c" class="front" src="assets/blank.png"><img id="p1_5i" class="back" src="assets/blank.png"></td>
+                    <td><img id="p1_6c" class="front" src="assets/blank.png"><img id="p1_6i" class="back" src="assets/blank.png"></td>
+                    <td><img id="p1_7c" class="front" src="assets/blank.png"><img id="p1_7i" class="back" src="assets/blank.png"></td>
+                </tr>
+                <tr>
+                    <td><img id="p1_8c" class="front" src="assets/blank.png"><img id="p1_8i" class="back" src="assets/blank.png"></td>
+                    <td><img id="p1_9c" class="front" src="assets/blank.png"><img id="p1_9i" class="back" src="assets/blank.png"></td>
+                    <td><img id="p1_10c" class="front" src="assets/blank.png"><img id="p1_10i" class="back" src="assets/blank.png"></td>
+                    <td><img id="p1_11c" class="front" src="assets/blank.png"><img id="p1_11i" class="back" src="assets/blank.png"></td>
+                    <td><img id="p1_12c" class="front" src="assets/blank.png"><img id="p1_12i" class="back" src="assets/blank.png"></td>
+                    <td><img id="p1_13c" class="front" src="assets/blank.png"><img id="p1_13i" class="back" src="assets/blank.png"></td>
+                    <td><img id="p1_14c" class="front" src="assets/blank.png"><img id="p1_14i" class="back" src="assets/blank.png"></td>
+                    <td><img id="p1_15c" class="front" src="assets/blank.png"><img id="p1_15i" class="back" src="assets/blank.png"></td>
+                </tr>
+            </table>
+        </div>
+        <div class="center" style="display: block"><span id="start"><button onclick="start()">Start</button></span></div>
+        <div id="inventory2">
+            <p>Player 2 Inventory</p>
+            <table>
+                <tr>
+                    <td><img id="p2_0c" class="front" src="assets/blank.png"><img id="p2_0i" class="back" src="assets/blank.png"></td>
+                    <td><img id="p2_1c" class="front" src="assets/blank.png"><img id="p2_1i" class="back" src="assets/blank.png"></td>
+                    <td><img id="p2_2c" class="front" src="assets/blank.png"><img id="p2_2i" class="back" src="assets/blank.png"></td>
+                    <td><img id="p2_3c" class="front" src="assets/blank.png"><img id="p2_3i" class="back" src="assets/blank.png"></td>
+                    <td><img id="p2_4c" class="front" src="assets/blank.png"><img id="p2_4i" class="back" src="assets/blank.png"></td>
+                    <td><img id="p2_5c" class="front" src="assets/blank.png"><img id="p2_5i" class="back" src="assets/blank.png"></td>
+                    <td><img id="p2_6c" class="front" src="assets/blank.png"><img id="p2_6i" class="back" src="assets/blank.png"></td>
+                    <td><img id="p2_7c" class="front" src="assets/blank.png"><img id="p2_7i" class="back" src="assets/blank.png"></td>
+                </tr>
+                <tr>
+                    <td><img id="p2_8c" class="front" src="assets/blank.png"><img id="p2_8i" class="back" src="assets/blank.png"></td>
+                    <td><img id="p2_9c" class="front" src="assets/blank.png"><img id="p2_9i" class="back" src="assets/blank.png"></td>
+                    <td><img id="p2_10c" class="front" src="assets/blank.png"><img id="p2_10i" class="back" src="assets/blank.png"></td>
+                    <td><img id="p2_11c" class="front" src="assets/blank.png"><img id="p2_11i" class="back" src="assets/blank.png"></td>
+                    <td><img id="p2_12c" class="front" src="assets/blank.png"><img id="p2_12i" class="back" src="assets/blank.png"></td>
+                    <td><img id="p2_13c" class="front" src="assets/blank.png"><img id="p2_13i" class="back" src="assets/blank.png"></td>
+                    <td><img id="p2_14c" class="front" src="assets/blank.png"><img id="p2_14i" class="back" src="assets/blank.png"></td>
+                    <td><img id="p2_15c" class="front" src="assets/blank.png"><img id="p2_15i" class="back" src="assets/blank.png"></td>
+                </tr>
+            </table>
+        </div>
+        <div id="score2" class="scoreBoard"><img id="score2img" class="profile" src="assets/blueMonsterDown.png" onmouseover="boo()" onmouseout="stopBoo()"><span><b><u>Player 2</u></b></span><br><span id="result2">0</span></div>
+    </div>
+</body>
+</html>

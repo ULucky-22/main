@@ -1,0 +1,135 @@
+8-21-2025 Note: Separate games into individual projects for simplicity, you
+can go back and add them in later if you need to.
+
+FUNCTION CHECK CTRL+F EVERY FUNCTION TO SEE IF ITS USED FOR GAME
+
+
+Monster Tiles Sandbox Desired Features:
+- Design/Save Maps
+- Two-Player & Single-Player Bot Option
+- Spawns food randomly, point values? 
+- Eat food to score points during timer, winner has more points.
+- Drawmode
+
+Working Features:
+- Customizable Map Dimensions
+- 2 (Local) Moveable Players 
+- Sandbox Tools (In Development)
+- Developer Tools (In Development)
+
+Expansions:
+- Mega Miner Game
+- Snake/Splix Game  [Duplicate validTile() if Doing Unique Player Tile Colors]
+- Tron Game
+- Pong Game
+- Home Page
+- Cookie Clicker Game
+- Single Player Snake Game
+
+Mechanics To Add:
+- "Shooting" (Snake)
+- "Territory" (Snake/Tron)
+- High Score/Scoreboard (All)
+- Bot (Base Game)
+- Game Tile Map JSON File
+- Bot (JSON File, Visited by ID?)
+
+Styling to Add:
+- GUI/Sandbox Buttons/Editor Mechanics
+    - Select Tile, Saved Tile
+- Page Styling (per page)
+- Color Selector
+- Customizing with Fields
+- Tile Naming Conventions
+
+To-Do/Expansions:
+
+
+
+Json Reviver function to find key value pairs
+
+/* ############################################################################################################################# */
+/* #######################################################[ PAUSED ITEMS ]###################################################### */
+/* ############################################################################################################################# */
+
+function swapTileUp() {
+    if (sessionMapData.players["player1"].yPos != 0) {
+        let oldID = sessionMapData.players["player1"].xPos + "_" + sessionMapData.players["player1"].yPos;
+        let newID = sessionMapData.players["player1"].xPos + "_" + (sessionMapData.players["player1"].yPos - 1);
+        if (swapIfTile(oldID, newID)) {
+            sessionMapData.players["player1"].yPos -= 1;
+        }
+    }
+}
+
+function swapTileDown() {
+    if (sessionMapData.players["player1"].yPos != sessionMapData.vars["ySize"] - 1) {
+        let oldID = sessionMapData.players["player1"].xPos + "_" + sessionMapData.players["player1"].yPos;
+        let newID = sessionMapData.players["player1"].xPos + "_" + (sessionMapData.players["player1"].yPos + 1);
+        if (swapIfTile(oldID, newID)) {
+            sessionMapData.players["player1"].yPos += 1;
+        }
+    }
+}
+
+function swapTileLeft() {
+    if (sessionMapData.players["player1"].xPos != 0) {
+        let oldID = sessionMapData.players["player1"].xPos + "_" + sessionMapData.players["player1"].yPos;
+        let newID = (sessionMapData.players["player1"].xPos - 1) + "_" + sessionMapData.players["player1"].yPos;
+        if (swapIfTile(oldID, newID)) {
+            sessionMapData.players["player1"].xPos -= 1;
+        }
+    }
+}
+
+function swapTileRight() {
+    if (sessionMapData.players["player1"].xPos != sessionMapData.vars["xSize"] - 1) {
+        let oldID = sessionMapData.players["player1"].xPos + "_" + sessionMapData.players["player1"].yPos;
+        let newID = (sessionMapData.players["player1"].xPos + 1) + "_" + sessionMapData.players["player1"].yPos;
+        if (swapIfTile(oldID, newID)) {
+            sessionMapData.players["player1"].xPos += 1;
+        }
+    }
+}
+
+/* [Snake] Game: (WIP: Work in Progress) */
+function startSnake() {
+    sessionMapData.games["active"] = true;
+    sessionMapData.players["player1"].xPos = 0;
+    sessionMapData.players["player1"].yPos = 0;
+    document.getElementById("0_0").src = "assets/tileBlackW.png";
+}
+
+/* [Snake] Game: (WIP: Work in Progress) */
+async function follow(yInp) {
+    //
+}
+
+
+/* Game Event Listener: for Snake */
+document.addEventListener('keydown', function (move) {
+    // If keys handled = true, continue
+    if (!['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(move.key)) return;
+    move.preventDefault();
+    if (!sessionMapData.games["active"]) return;
+    // Directional Definitions
+    const oldID = sessionMapData.players["player1"].xPos + "_" + sessionMapData.players["player1"].yPos;
+    let newX = sessionMapData.players["player1"].xPos;
+    let newY = sessionMapData.players["player1"].yPos;
+    if (move.key === 'ArrowUp' && sessionMapData.players["player1"].yPos > 0) {
+        newY = sessionMapData.players["player1"].yPos - 1;
+    } else if (move.key === 'ArrowDown' && sessionMapData.players["player1"].yPos < sessionMapData.vars["ySize"] - 1) {
+        newY = sessionMapData.players["player1"].yPos + 1;
+    } else if (move.key === 'ArrowLeft' && sessionMapData.players["player1"].xPos > 0) {
+        newX = sessionMapData.players["player1"].xPos - 1;
+    } else if (move.key === 'ArrowRight' && sessionMapData.players["player1"].xPos < sessionMapData.vars["xSize"] - 1) {
+        newX = sessionMapData.players["player1"].xPos + 1;
+    } else {
+        return;
+    }
+    const newID = newX + "_" + newY;
+    if (swapIfTile(oldID, newID)) {
+        sessionMapData.players["player1"].xPos = newX;
+        sessionMapData.players["player1"].yPos = newY;
+    }
+});
