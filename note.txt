@@ -49,6 +49,20 @@ To-Do/Expansions:
 Json Reviver function to find key value pairs
 
 /* ############################################################################################################################# */
+/* #######################################################[ NOTES DUMP ]######################################################## */
+/* ############################################################################################################################# */
+
+Planned Functions:
+- checkHave(item, amt) - Checks if inventory has amount of items
+    - Builds into recipes which will use multiple checkHaves()
+
+- checkIfNear(tileType, distance?) - Checks if near certain tile to interact with, potential to check distance away
+    - Builds into different interactions unlocking by distance
+
+Ideas:
+- Add mystical items like Catholic Church relics. Inspo: Alleged Jesus-face in shroud relic
+
+/* ############################################################################################################################# */
 /* #######################################################[ PAUSED ITEMS ]###################################################### */
 /* ############################################################################################################################# */
 
