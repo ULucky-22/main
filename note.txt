@@ -3,6 +3,15 @@ can go back and add them in later if you need to.
 
 FUNCTION CHECK CTRL+F EVERY FUNCTION TO SEE IF ITS USED FOR GAME
 
+Monster Tiles Sandbox
+Description: 2D Survival Game, Minecraft/Terraria/Stardew-like?
+- Chest/GUI Area for Stuff
+- Item Overlay Images
+- Probably make single player then think multiplayer
+- JSON save map, paste space if out of bounds
+- Refactor for DRY and User ClasS, SRS, S/E PRINCIPLES 
+- COMMAND ZONE for dev mode and game/story mode
+
 
 Monster Tiles Sandbox Desired Features:
 - Design/Save Maps
