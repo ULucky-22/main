@@ -1,14 +1,17 @@
-8-21-2025 Note: Separate games into individual projects for simplicity, you
-can go back and add them in later if you need to.
+Name: Monster Tiles Sandbox
+Description: 2D Survival Game, Minecraft/Terraria/Stardew-like?
 
+Features to Implement:
+- Chest/Interface GUI Area
+- Item 'Drops' Overlay
+- JSON Map Save (Fill with space if out of bounds), Then Separate Map Data Save
+
+Refactoring List:
+- Use D.R.Y. (Don't Repeat Yourself)
 FUNCTION CHECK CTRL+F EVERY FUNCTION TO SEE IF ITS USED FOR GAME
 
-Monster Tiles Sandbox
-Description: 2D Survival Game, Minecraft/Terraria/Stardew-like?
-- Chest/GUI Area for Stuff
-- Item Overlay Images
+
 - Probably make single player then think multiplayer
-- JSON save map, paste space if out of bounds
 - Refactor for DRY and User ClasS, SRS, S/E PRINCIPLES 
 - COMMAND ZONE for dev mode and game/story mode
 
@@ -26,15 +29,6 @@ Working Features:
 - Sandbox Tools (In Development)
 - Developer Tools (In Development)
 
-Expansions:
-- Mega Miner Game
-- Snake/Splix Game  [Duplicate validTile() if Doing Unique Player Tile Colors]
-- Tron Game
-- Pong Game
-- Home Page
-- Cookie Clicker Game
-- Single Player Snake Game
-
 Mechanics To Add:
 - "Shooting" (Snake)
 - "Territory" (Snake/Tron)
@@ -51,15 +45,23 @@ Styling to Add:
 - Customizing with Fields
 - Tile Naming Conventions
 
-To-Do/Expansions:
-
-
-
 Json Reviver function to find key value pairs
 
 /* ############################################################################################################################# */
 /* #######################################################[ NOTES DUMP ]######################################################## */
 /* ############################################################################################################################# */
+8-21-2025 Note: Separate games into individual projects for simplicity, you
+can go back and add them in later if you need to.
+
+Expansions:
+- Mega Miner Game
+- Snake/Splix Game  [Duplicate validTile() if Doing Unique Player Tile Colors]
+- Tron Game
+- Pong Game
+- Home Page
+- Cookie Clicker Game
+- Single Player Snake Game
+
 
 Planned Functions:
 - checkHave(item, amt) - Checks if inventory has amount of items
