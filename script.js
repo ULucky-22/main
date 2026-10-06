@@ -4,7 +4,7 @@
 
 // Session Map Data Object
 var sessionMapData = {
-    vars: {"MOVE_COOLDOWN_MS":150, "xSize":11, "ySize":11, "openTiles":0, "playerCount":0, "bots":0, "result1":0, "result2":0, "gameClock":0, "timestamp":0, "randX":0, "randY":0},
+    vars: {"MOVE_COOLDOWN_MS":150, "xSize":65, "ySize":65, "openTiles":0, "playerCount":0, "bots":0, "result1":0, "result2":0, "gameClock":0, "timestamp":0, "randX":0, "randY":0},
     players: {
         "p1":{
             "active":false, 
@@ -135,108 +135,108 @@ let session_id = 0;
 /* ####################################################[ LOAD/SAVE FUNCTIONS ]################################################## */
 /* ############################################################################################################################# */
 
-// /* Sets Tile Data (Single) */
-// function setTileData(tileID, {src, background}) {
-//     if (!savedMapData.tiles[tileID]) savedMapData.tiles[tileID] = {};
-//     if (src !== undefined) savedMapData.tiles[tileID].src = src;
-//     if (background !== undefined) savedMapData.tiles[tileID].background = background;
-// }
+/* Sets Tile Data (Single) */
+function setTileData(tileID, {src, background}) {
+    if (!savedMapData.tiles[tileID]) savedMapData.tiles[tileID] = {};
+    if (src !== undefined) savedMapData.tiles[tileID].src = src;
+    if (background !== undefined) savedMapData.tiles[tileID].background = background;
+}
 
-// /* Loads Map Data from Local Storage into Board */
-// function loadGame() {
-//     loadMapData();
-//     boardLoad();
-//     requestAnimationFrame(update);
-// }
+/* Loads Map Data from Local Storage into Board */
+function loadGame() {
+    loadMapData();
+    boardLoad();
+    requestAnimationFrame(update);
+}
 
-// /* Strings savedMapData and loads from localStorage, Error handling */
-// function loadMapData() {
-//     try {
-//         const string = localStorage.getItem("save");
-//         if (!string) return null;
-//         const load = JSON.parse(string);
-//         savedMapData.vars = load.vars || {};
-//         savedMapData.players = load.players || {};
-//         savedMapData.games = load.games || {};
-//         savedMapData.tiles = load.tiles || {};
-//         return savedMapData;
-//     } catch (e) {
-//         console.warn("Failed to load board:", e);
-//         return null;
-//     }
-// }
+/* Strings savedMapData and loads from localStorage, Error handling */
+function loadMapData() {
+    try {
+        const string = localStorage.getItem("save");
+        if (!string) return null;
+        const load = JSON.parse(string);
+        savedMapData.vars = load.vars || {};
+        savedMapData.players = load.players || {};
+        savedMapData.games = load.games || {};
+        savedMapData.tiles = load.tiles || {};
+        return savedMapData;
+    } catch (e) {
+        console.warn("Failed to load board:", e);
+        return null;
+    }
+}
 
-// /* Loads board src and background */
-// function boardLoad() {
-//     if (sessionMapData.vars["xSize"] < savedMapData.vars["xSize"]) {
-//         sessionMapData.vars["xSize"] = savedMapData.vars["xSize"];
-//         // Additional Code to calculate opentiles
-//     } else {
-//         // When currentSize > savesize
-//     }
-//     if (sessionMapData.vars["ySize"] < savedMapData.vars["ySize"]) {
-//         sessionMapData.vars["ySize"] = savedMapData.vars["ySize"];
-//         // "  "
-//     } else {
-//         // "  "
-//     }
-//     // makeBoard(savedMapData.vars.xSize, savedMapData.vars.ySize);
-//     for (const [tileID, attribute] of Object.entries(savedMapData.tiles)) {
-//         if (!document.getElementById(tileID)) continue;
-//         if (attribute.src !== undefined) document.getElementById(tileID).setAttribute('src', attribute.src);
-//         if (attribute.background !== undefined) document.getElementById(tileID).style.backgroundColor = attribute.background;
-//     }
+/* Loads board src and background */
+function boardLoad() {
+    if (sessionMapData.vars["xSize"] < savedMapData.vars["xSize"]) {
+        sessionMapData.vars["xSize"] = savedMapData.vars["xSize"];
+        // Additional Code to calculate opentiles
+    } else {
+        // When currentSize > savesize
+    }
+    if (sessionMapData.vars["ySize"] < savedMapData.vars["ySize"]) {
+        sessionMapData.vars["ySize"] = savedMapData.vars["ySize"];
+        // "  "
+    } else {
+        // "  "
+    }
+    // makeBoard(savedMapData.vars.xSize, savedMapData.vars.ySize);
+    for (const [tileID, attribute] of Object.entries(savedMapData.tiles)) {
+        if (!document.getElementById(tileID)) continue;
+        if (attribute.src !== undefined) document.getElementById(tileID).setAttribute('src', attribute.src);
+        if (attribute.background !== undefined) document.getElementById(tileID).style.backgroundColor = attribute.background;
+    }
    
     
-//     // Needs to handle different sized-saves and
-//     sessionMapData.xyz = savedMapData.xyz (include for all vars)
-// }
+    // Needs to handle different sized-saves and
+    // sessionMapData.xyz = savedMapData.xyz (include for all vars)
+}
 
-// /* Saves Board and Map Data into LocalStorage */
-// function saveGame() {
-//     boardSave();
-//     saveMapData();
-// }
+/* Saves Board and Map Data into LocalStorage */
+function saveGame() {
+    boardSave();
+    saveMapData();
+}
 
-// /* Saves board src and background */
-// function boardSave() {
-//     for (let x = 0; x < sessionMapData.vars["xSize"]; x++) {
-//         for (let y = 0; y < sessionMapData.vars["ySize"]; y++) {
-//         const tileID = x + "_" + y;
-//         const computed = getComputedStyle(document.getElementById(tileID));
-//         savedMapData.tiles[tileID] = {
-//             src: document.getElementById(tileID).getAttribute("src") || "",
-//             background: computed.backgroundColor || ""
-//         };
-//         }
-//     }
-//     savedMapData.vars["xSize"] = sessionMapData.vars["xSize"];
-//     savedMapData.vars["ySize"] = sessionMapData.vars["ySize"];
-//     savedMapData.vars["openTiles"] = sessionMapData.vars["openTiles"];
-//     savedMapData.vars["playerCount"] = sessionMapData.vars["playerCount"];
-//     savedMapData.vars["result1"] = sessionMapData.vars["result1"];
-//     savedMapData.vars["result2"] = sessionMapData.vars["result2"];
-//     savedMapData.vars["gameClock"] = sessionMapData.vars["gameClock"];
-//     savedMapData.vars["timestamp"] = sessionMapData.vars["timestamp"];
-//     savedMapData.players["p1"].xPos = sessionMapData.players["p1"].xPos;
-//     savedMapData.players["p1"].yPos = sessionMapData.players["p1"].yPos;
-//     savedMapData.players["p2"].xPos = sessionMapData.players["p2"].xPos;
-//     savedMapData.players["p2"].yPos = sessionMapData.players["p2"].yPos;
-//     savedMapData.games["active"] = sessionMapData.games["active"];
-//     savedMapData.games["active1"] = sessionMapData.players["p1"].active;
-//     savedMapData.games["active2"] = sessionMapData.players["p2"].active;
-//     //savedMapData.timestamp = Date.now();
-// }
+/* Saves board src and background */
+function boardSave() {
+    for (let x = 0; x < sessionMapData.vars["xSize"]; x++) {
+        for (let y = 0; y < sessionMapData.vars["ySize"]; y++) {
+        const tileID = x + "_" + y;
+        const computed = getComputedStyle(document.getElementById(tileID));
+        savedMapData.tiles[tileID] = {
+            src: document.getElementById(tileID).getAttribute("src") || "",
+            background: computed.backgroundColor || ""
+        };
+        }
+    }
+    savedMapData.vars["xSize"] = sessionMapData.vars["xSize"];
+    savedMapData.vars["ySize"] = sessionMapData.vars["ySize"];
+    savedMapData.vars["openTiles"] = sessionMapData.vars["openTiles"];
+    savedMapData.vars["playerCount"] = sessionMapData.vars["playerCount"];
+    savedMapData.vars["result1"] = sessionMapData.vars["result1"];
+    savedMapData.vars["result2"] = sessionMapData.vars["result2"];
+    savedMapData.vars["gameClock"] = sessionMapData.vars["gameClock"];
+    savedMapData.vars["timestamp"] = sessionMapData.vars["timestamp"];
+    savedMapData.players["p1"].xPos = sessionMapData.players["p1"].xPos;
+    savedMapData.players["p1"].yPos = sessionMapData.players["p1"].yPos;
+    savedMapData.players["p2"].xPos = sessionMapData.players["p2"].xPos;
+    savedMapData.players["p2"].yPos = sessionMapData.players["p2"].yPos;
+    savedMapData.games["active"] = sessionMapData.games["active"];
+    savedMapData.games["active1"] = sessionMapData.players["p1"].active;
+    savedMapData.games["active2"] = sessionMapData.players["p2"].active;
+    //savedMapData.timestamp = Date.now();
+}
 
-// /* Strings savedMapData and saves to localStorage, Error handling */
-// function saveMapData() {
-//     try {
-//         const string = JSON.stringify(savedMapData);
-//         localStorage.setItem("save", string);
-//     } catch (e) {
-//         console.warn("Failed to save board:", e);
-//     }
-// }
+/* Strings savedMapData and saves to localStorage, Error handling */
+function saveMapData() {
+    try {
+        const string = JSON.stringify(savedMapData);
+        localStorage.setItem("save", string);
+    } catch (e) {
+        console.warn("Failed to save board:", e);
+    }
+}
 
 /* JSON Maker */
 
