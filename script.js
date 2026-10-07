@@ -4,7 +4,7 @@
 
 // Session Map Data Object
 var sessionMapData = {
-    vars: {"MOVE_COOLDOWN_MS":150, "xSize":45, "ySize":25, "openTiles":0, "playerCount":0, "bots":0, "result1":0, "result2":0, "gameClock":0, "timestamp":0, "randX":0, "randY":0},
+    vars: {"MOVE_COOLDOWN_MS":150, "xSize":25, "ySize":15, "openTiles":0, "playerCount":0, "bots":0, "result1":0, "result2":0, "gameClock":0, "timestamp":0, "randX":0, "randY":0},
     players: {
         "p1":{
             "active":false, 
