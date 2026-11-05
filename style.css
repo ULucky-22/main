@@ -20,9 +20,10 @@ td img {
   border: 1px black solid;
 }
 
-.main {
-  justify-content: center;
-  display: flex;
+#main {
+  /* display: grid;
+  grid-template-columns: 1fr 1fr 1fr; */
+  column-gap: 0.5vw;
 }
 
 .front {
@@ -34,9 +35,15 @@ td img {
 }
 
 .center {
-    display: flex;
-    justify-content: center;
-    text-align: center;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+.txtcenter {
+  justify-content: center;
+  text-align: center;
+  display: flex;
 }
 
 .scoreBoard {
@@ -45,7 +52,7 @@ td img {
   margin: 0.1vw;
   padding: 0.1vw;
   border: 0.1vw solid black;
-  height: auto;
+  height: 7vw;
   width: 4vw;
   
 }
@@ -56,6 +63,11 @@ td img {
 
 .profile {
   border: 0.2vw solid black;
+}
+
+#alert {
+  border: 0.1vw solid black;
+  width: 25%;
 }
 
 #score1 {
@@ -73,5 +85,21 @@ td img {
 }
 
 #devClock p {
+  margin: 0;
+  font-size: 0.7vw;
+}
+
+#debugMenu {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
+#title h1 {
+  padding: 0;
+  margin: 0;
+}
+
+.drawModeLabel {
   margin: 0;
 }

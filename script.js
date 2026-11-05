@@ -1,38 +1,51 @@
 /* ############################################################################################################################# */
-/* ####################################################[ SAVE/GAME VARIABLES ]################################################## */
+/* #######################################################[ GAME VARIABLES ]#################################################### */
 /* ############################################################################################################################# */
 
-// Session Map Data Object
+// [Variable] Session Map Data Object
 var sessionMapData = {
-    vars: {"MOVE_COOLDOWN_MS":150, "xSize":25, "ySize":15, "openTiles":0, "playerCount":0, "bots":0, "result1":0, "result2":0, "gameClock":0, "timestamp":0, "randX":0, "randY":0},
+    vars: {
+        "MOVE_COOLDOWN_MS":150, // Open: Can be changed for 'speed boost', maybe even game-speed setting
+        "xSize":25, // Settings: Used to edit board size
+        "ySize":15,  // Settings: Used to edit board size
+        "openTiles":0, // Private: Calculated from size
+        "playerCount":0, // Private: Used to limit player count
+        "bots":0, // Private: Used to limit bot count
+        "result1":0, // Private: Player 1 Score
+        "result2":0, // Private: Player 2 Score
+        "gameClock":0, // Private: Game Clock
+        "timestamp":0, // Private: Used for save timestamp
+        "randX":0, // Private: Used for random tile generation
+        "randY":0 // Private: Used for random tile generation
+    },
     players: {
         "p1":{
-            "active":false, 
-            "xPos":0, 
-            "yPos":0, 
-            "keys":{
+            "active":false, // Private: Used to limit player count
+            "xPos":0, // Private: Used to track player position
+            "yPos":0, // Private: Used to track player position
+            "keys":{ // Settings: Can be changed for custom keybinds
                 "up":"w", 
                 "down":"s", 
                 "left":"a", 
                 "right":"d"
             },
-            "inventory":{
-                0:{"item":"assets/blank.png", "count":"assets/blank.png", "hold":0},
-                1:{"item":"assets/blank.png", "count":"assets/blank.png", "hold":0},
-                2:{"item":"assets/blank.png", "count":"assets/blank.png", "hold":0},
-                3:{"item":"assets/blank.png", "count":"assets/blank.png", "hold":0},
-                4:{"item":"assets/blank.png", "count":"assets/blank.png", "hold":0},
-                5:{"item":"assets/blank.png", "count":"assets/blank.png", "hold":0},
-                6:{"item":"assets/blank.png", "count":"assets/blank.png", "hold":0},
-                7:{"item":"assets/blank.png", "count":"assets/blank.png", "hold":0},
-                8:{"item":"assets/blank.png", "count":"assets/blank.png", "hold":0},
-                9:{"item":"assets/blank.png", "count":"assets/blank.png", "hold":0},
-                10:{"item":"assets/blank.png", "count":"assets/blank.png", "hold":0},
-                11:{"item":"assets/blank.png", "count":"assets/blank.png", "hold":0},
-                12:{"item":"assets/blank.png", "count":"assets/blank.png", "hold":0},
-                13:{"item":"assets/blank.png", "count":"assets/blank.png", "hold":0},
-                14:{"item":"assets/blank.png", "count":"assets/blank.png", "hold":0},
-                15:{"item":"assets/blank.png", "count":"assets/blank.png", "hold":0},
+            "inventory":{ // Open: Can be changed for custom inventory effects
+                0:{"item":"assets/blank.png", "count":0},
+                1:{"item":"assets/blank.png", "count":0},
+                2:{"item":"assets/blank.png", "count":0},
+                3:{"item":"assets/blank.png", "count":0},
+                4:{"item":"assets/blank.png", "count":0},
+                5:{"item":"assets/blank.png", "count":0},
+                6:{"item":"assets/blank.png", "count":0},
+                7:{"item":"assets/blank.png", "count":0},
+                8:{"item":"assets/blank.png", "count":0},
+                9:{"item":"assets/blank.png", "count":0},
+                10:{"item":"assets/blank.png", "count":0},
+                11:{"item":"assets/blank.png", "count":0},
+                12:{"item":"assets/blank.png", "count":0},
+                13:{"item":"assets/blank.png", "count":0},
+                14:{"item":"assets/blank.png", "count":0},
+                15:{"item":"assets/blank.png", "count":0},
             }
         }, 
         "p2":{
@@ -46,22 +59,22 @@ var sessionMapData = {
                 "right":"ArrowRight"
             },
             "inventory":{
-                0:{"item":"assets/blank.png", "count":"assets/blank.png", "hold":0},
-                1:{"item":"assets/blank.png", "count":"assets/blank.png", "hold":0},
-                2:{"item":"assets/blank.png", "count":"assets/blank.png", "hold":0},
-                3:{"item":"assets/blank.png", "count":"assets/blank.png", "hold":0},
-                4:{"item":"assets/blank.png", "count":"assets/blank.png", "hold":0},
-                5:{"item":"assets/blank.png", "count":"assets/blank.png", "hold":0},
-                6:{"item":"assets/blank.png", "count":"assets/blank.png", "hold":0},
-                7:{"item":"assets/blank.png", "count":"assets/blank.png", "hold":0},
-                8:{"item":"assets/blank.png", "count":"assets/blank.png", "hold":0},
-                9:{"item":"assets/blank.png", "count":"assets/blank.png", "hold":0},
-                10:{"item":"assets/blank.png", "count":"assets/blank.png", "hold":0},
-                11:{"item":"assets/blank.png", "count":"assets/blank.png", "hold":0},
-                12:{"item":"assets/blank.png", "count":"assets/blank.png", "hold":0},
-                13:{"item":"assets/blank.png", "count":"assets/blank.png", "hold":0},
-                14:{"item":"assets/blank.png", "count":"assets/blank.png", "hold":0},
-                15:{"item":"assets/blank.png", "count":"assets/blank.png", "hold":0},
+                0:{"item":"assets/blank.png", "count":0},
+                1:{"item":"assets/blank.png", "count":0},
+                2:{"item":"assets/blank.png", "count":0},
+                3:{"item":"assets/blank.png", "count":0},
+                4:{"item":"assets/blank.png", "count":0},
+                5:{"item":"assets/blank.png", "count":0},
+                6:{"item":"assets/blank.png", "count":0},
+                7:{"item":"assets/blank.png", "count":0},
+                8:{"item":"assets/blank.png", "count":0},
+                9:{"item":"assets/blank.png", "count":0},
+                10:{"item":"assets/blank.png", "count":0},
+                11:{"item":"assets/blank.png", "count":0},
+                12:{"item":"assets/blank.png", "count":0},
+                13:{"item":"assets/blank.png", "count":0},
+                14:{"item":"assets/blank.png", "count":0},
+                15:{"item":"assets/blank.png", "count":0},
             }
         }, 
         "bot":{
@@ -75,17 +88,13 @@ var sessionMapData = {
         "bot":"assets/greenMonsterDown.png", 
         "wall":"assets/tileBlackW.png", 
         "space":"assets/blank.png", 
-        "entities":[
-            "assets/chest.png", 
-            "assets/goldChest.png", 
-            "assets/key.png", 
-            "assets/heartKey.png", 
-            "assets/scroll.png", 
-            "assets/coins.png", 
-            "assets/potion.png", 
-            "assets/invisibility.png"
-        ], 
-        "foodSrcs":[
+        "entity":[
+            "assets/redMonsterDown.png",
+            "assets/blueMonsterDown.png",
+            "assets/greenMonsterDown.png",
+            "assets/tileBlackW.png"
+        ],
+        "food":[
             "assets/food/apple.png", 
             "assets/food/banana.png", 
             "assets/food/cherry.png", 
@@ -103,17 +112,33 @@ var sessionMapData = {
             "assets/food/starfruit.png", 
             "assets/food/strawberry.png", 
             "assets/food/watermelon.png"
+        ],
+        "item":[
+            "assets/chest.png", 
+            "assets/goldChest.png", 
+            "assets/key.png", 
+            "assets/heartKey.png", 
+            "assets/scroll.png", 
+            "assets/coins.png", 
+            "assets/potion.png", 
+            "assets/invisibility.png"
         ]},
     drawMode: {
         "paintColor":"none", 
-        "color1":"none", 
-        "color2":"black", 
+        "flashColor1":"none", 
+        "flashColor2":"red", 
+        "tool":"draw",
         "mode":"click", 
         "shape":"dot", 
-        "drawMode":"clickinputdot", 
-        "inputTile":"assets/blank.png", 
-        "lastTile":"assets/blank.png", 
-        "inputOn":false, 
+        "input":"apple",
+        "lastTool":"draw",
+        "lastMode":"click",
+        "lastShape":"dot",
+        "lastInput":"apple",
+        "drawMode":"clickinputdot", //
+        "inputTile":"assets/blank.png", //
+        "lastTile":"assets/blank.png",  //
+        "inputOn":false, // use in tool 
         "boxOn":true, 
         "bucketOn":false, 
         "x1":0, 
@@ -123,307 +148,137 @@ var sessionMapData = {
     tiles: {}
 };
 
-// Saved Map Data Object
-// var savedMapData = {
-//     // Same variables as sessionMapData
-// };
-
-// Game Variables
+/* [Variable] Debug session counter */
 let session_id = 0; 
 
 /* ############################################################################################################################# */
-/* ####################################################[ LOAD/SAVE FUNCTIONS ]################################################## */
+/* #######################################################[ SAVING LOGIC ]###################################################### */
 /* ############################################################################################################################# */
 
-/* Sets Tile Data (Single) */
-function setTileData(tileID, {src, background}) {
-    if (!savedMapData.tiles[tileID]) savedMapData.tiles[tileID] = {};
-    if (src !== undefined) savedMapData.tiles[tileID].src = src;
-    if (background !== undefined) savedMapData.tiles[tileID].background = background;
+/* [Saving] Saves game and map to LocalStorage */
+function saveGame() {
+    try {
+        // Saves current board state to sessionMapData.tiles
+        boardSave();
+        // Saves sessionMapData to localStorage as JSON string
+        const string = JSON.stringify(sessionMapData);
+        localStorage.setItem("save", string);
+        // Alert user that the game has been saved
+        document.getElementById("alert").innerHTML = "Game Saved!";
+    } catch (e) {
+        console.warn("Failed to save board:", e);
+    }
 }
 
-/* Loads Map Data from Local Storage into Board */
+/* [Saving] Loads game and map from LocalStorage */
 function loadGame() {
-    loadMapData();
-    boardLoad();
-    requestAnimationFrame(update);
-}
-
-/* Strings savedMapData and loads from localStorage, Error handling */
-function loadMapData() {
     try {
         const string = localStorage.getItem("save");
-        if (!string) return null;
         const load = JSON.parse(string);
-        savedMapData.vars = load.vars || {};
-        savedMapData.players = load.players || {};
-        savedMapData.games = load.games || {};
-        savedMapData.tiles = load.tiles || {};
-        return savedMapData;
+        sessionMapData.vars = load.vars || {};
+        sessionMapData.players = load.players || {};
+        sessionMapData.assets = load.assets || {};
+        sessionMapData.drawMode = load.drawMode || {};
+        sessionMapData.tiles = load.tiles || {};
+        boardLoad();
+        requestAnimationFrame(update);
+        // Alert user that the game has been loaded
+        document.getElementById("alert").innerHTML = "Game Loaded!";
     } catch (e) {
         console.warn("Failed to load board:", e);
         return null;
     }
 }
 
-/* Loads board src and background */
-function boardLoad() {
-    if (sessionMapData.vars["xSize"] < savedMapData.vars["xSize"]) {
-        sessionMapData.vars["xSize"] = savedMapData.vars["xSize"];
-        // Additional Code to calculate opentiles
-    } else {
-        // When currentSize > savesize
-    }
-    if (sessionMapData.vars["ySize"] < savedMapData.vars["ySize"]) {
-        sessionMapData.vars["ySize"] = savedMapData.vars["ySize"];
-        // "  "
-    } else {
-        // "  "
-    }
-    // makeBoard(savedMapData.vars.xSize, savedMapData.vars.ySize);
-    for (const [tileID, attribute] of Object.entries(savedMapData.tiles)) {
-        if (!document.getElementById(tileID)) continue;
-        if (attribute.src !== undefined) document.getElementById(tileID).setAttribute('src', attribute.src);
-        if (attribute.background !== undefined) document.getElementById(tileID).style.backgroundColor = attribute.background;
-    }
-   
+/* [Saving] Saves game and map to JSON file */
+async function saveToFile(sessionMapData) {
+  try {
+    // Open browser 'Save As' dialog
+    const handle = await window.showSaveFilePicker({
+      suggestedName: 'test.json',
+      types: [{
+        description: 'JSON Files',
+        accept: { 'application/json': ['.json'] },
+      }],
+    });
+
+    // Create writable stream and write the stringified object
+    const writable = await handle.createWritable();
+    await writable.write(JSON.stringify(sessionMapData, null, 2));
+    await writable.close();
     
-    // Needs to handle different sized-saves and
-    // sessionMapData.xyz = savedMapData.xyz (include for all vars)
+    console.log("File saved successfully!");
+  } catch (err) {
+    console.error("Save cancelled or failed:", err);
+  }
 }
 
-/* Saves Board and Map Data into LocalStorage */
-function saveGame() {
-    boardSave();
-    saveMapData();
+/* [Saving] Loads game and map from JSON file */
+async function loadFromFile() {
+  try {
+    // Open browser native 'Open File' dialog
+    const [handle] = await window.showOpenFilePicker({
+      types: [{
+        description: 'JSON Files',
+        accept: { 'application/json': ['.json'] },
+      }],
+    });
+    // Get file contents and read as text
+    const file = await handle.getFile();
+    const text = await file.text();
+    // Parse back into a JS Object, load board
+    sessionMapData = JSON.parse(text);
+    boardLoad();
+  } catch (err) {
+    console.error("Load cancelled or failed:", err);
+  }
 }
 
-/* Saves board src and background */
+/* [Saving] Saves board src and background to sessionMapData[tiles] object */
 function boardSave() {
     for (let x = 0; x < sessionMapData.vars["xSize"]; x++) {
         for (let y = 0; y < sessionMapData.vars["ySize"]; y++) {
-        const tileID = x + "_" + y;
-        const computed = getComputedStyle(document.getElementById(tileID));
-        savedMapData.tiles[tileID] = {
-            src: document.getElementById(tileID).getAttribute("src") || "",
-            background: computed.backgroundColor || ""
-        };
+            const tileID = x + "_" + y;
+            const computed = getComputedStyle(document.getElementById(tileID));
+            sessionMapData.tiles[tileID] = {
+                src: document.getElementById(tileID).getAttribute("src") || "sessionMapData.assets['blank']",
+                background: computed.backgroundColor || "none"
+            };
         }
     }
-    savedMapData.vars["xSize"] = sessionMapData.vars["xSize"];
-    savedMapData.vars["ySize"] = sessionMapData.vars["ySize"];
-    savedMapData.vars["openTiles"] = sessionMapData.vars["openTiles"];
-    savedMapData.vars["playerCount"] = sessionMapData.vars["playerCount"];
-    savedMapData.vars["result1"] = sessionMapData.vars["result1"];
-    savedMapData.vars["result2"] = sessionMapData.vars["result2"];
-    savedMapData.vars["gameClock"] = sessionMapData.vars["gameClock"];
-    savedMapData.vars["timestamp"] = sessionMapData.vars["timestamp"];
-    savedMapData.players["p1"].xPos = sessionMapData.players["p1"].xPos;
-    savedMapData.players["p1"].yPos = sessionMapData.players["p1"].yPos;
-    savedMapData.players["p2"].xPos = sessionMapData.players["p2"].xPos;
-    savedMapData.players["p2"].yPos = sessionMapData.players["p2"].yPos;
-    savedMapData.games["active"] = sessionMapData.games["active"];
-    savedMapData.games["active1"] = sessionMapData.players["p1"].active;
-    savedMapData.games["active2"] = sessionMapData.players["p2"].active;
-    //savedMapData.timestamp = Date.now();
 }
 
-/* Strings savedMapData and saves to localStorage, Error handling */
-function saveMapData() {
-    try {
-        const string = JSON.stringify(savedMapData);
-        localStorage.setItem("save", string);
-    } catch (e) {
-        console.warn("Failed to save board:", e);
+/* [Saving] Loads board src and background from sessionMapData[tiles] object */
+function boardLoad() {
+    for (const [tileID, attribute] of Object.entries(sessionMapData.tiles)) {
+        if (!document.getElementById(tileID)) 
+            continue;
+        if (attribute.src !== undefined) 
+            document.getElementById(tileID).setAttribute('src', attribute.src);
+        if (attribute.background !== undefined) 
+            document.getElementById(tileID).style.backgroundColor = attribute.background;
     }
 }
 
-/* JSON Maker */
-
-/* JSON Loader */
-
 /* ############################################################################################################################# */
-/* ######################################################[ GAME FUNCTIONS ]##################################################### */
+/* ######################################################[ MAIN GAME LOGIC ]#################################################### */
 /* ############################################################################################################################# */
 
-/* On Page Load */
+/* [Main] Main function, initializes on page load */
 function onload() {
     // Monster Tiles Sandbox Initialization
-    makeBoard(sessionMapData.vars["xSize"], sessionMapData.vars["ySize"]);
-    sandboxTools();
+    initializeBoard(sessionMapData.vars["xSize"], sessionMapData.vars["ySize"]);
+    initializeSandboxMenu();
     setTool("draw");
     setMode("click");
     setShape("dot");
+    setInput("chest");
     // Session Tracker (Counts Debug Sessions)
     session_id = parseInt(localStorage.getItem("session_id")) || 0;
     localStorage.setItem("session_id", session_id += 1);
 }
 
-/* Board Maker */
-function makeBoard(xInput, yInput) {
-    sessionMapData.vars["xSize"] = xInput;
-    sessionMapData.vars["ySize"] = yInput;
-    sessionMapData.vars["openTiles"] = xInput * yInput;
-    let boardTextArray = [];
-    boardTextArray.push("<table>");
-    for (let i = 0; i < sessionMapData.vars["ySize"]; i++) {
-        boardTextArray.push("<tr>");
-        for (let j = 0; j < sessionMapData.vars["xSize"]; j++) {
-            let newString = '<td><img id="' + j + '_' + i + '" class="back" src="' + sessionMapData.assets["space"] + '"></td>';
-            boardTextArray.push(newString);
-            //setTileData(j + '_' + i, {src: sessionMapData.assets["space"], background: "none"}); <--Save function
-        }
-        boardTextArray.push("</tr>");
-    }
-    boardTextArray.push("</table>");
-    let boardText = boardTextArray.join("");
-    document.getElementById("board").innerHTML = boardText;
-}
-
-/* Sandbox Tools, appears with board */
-function sandboxTools() {
-    document.getElementById("toolbox").innerHTML = '<div><button onclick="paintOff()" ondblclick="paintOn()">Paint Mode: <span id="paint">Off (none)</span></button><button onclick="spawnFood()">Spawn Food</button><button onclick="addTile(' + "'food'" + ')">Add Food</button><button onclick="clearFood()">Clear Food</button><button onclick="fillBoard()">Clear Board</button><button onclick="addPlayer1()">Player 1</button><button onclick="addPlayer2()">Player 2</button><button id="drawModeButton" onclick="drawModeCycle()">Draw Mode: <span id="drawModeCycle">' + sessionMapData.drawMode["drawMode"] + '</span></button><br></div>';
-    //document.getElementById("styles").innerHTML = '<div><input type="color" id="colorPicker" name="colorPicker" value="#000000"></div>'
-}
-
-/* Game: Adds Player 1 */
-function addPlayer1() {
-    if (sessionMapData.vars["openTiles"] != 0) {
-        if (sessionMapData.players["p1"].active == false && sessionMapData.vars["playerCount"] != 2) {
-            while (sessionMapData.players["p1"].active != true) {
-                document.getElementById(randomValidID()).src = sessionMapData.assets["p1"];
-                sessionMapData.vars["openTiles"]--;
-                sessionMapData.players["p1"].xPos = sessionMapData.vars["randX"];
-                sessionMapData.players["p1"].yPos = sessionMapData.vars["randY"];
-                sessionMapData.vars["playerCount"] += 1;
-                sessionMapData.players["p1"].active = true;
-            }
-        } else {
-            swapTileSrc(sessionMapData.players["p1"].xPos + "_" + sessionMapData.players["p1"].yPos, randomValidID());
-            sessionMapData.players["p1"].xPos = sessionMapData.vars["randX"];
-            sessionMapData.players["p1"].yPos = sessionMapData.vars["randY"];
-        }
-    }
-}
-
-/* Game: Adds Player 2 */
-function addPlayer2() {
-    if (sessionMapData.vars["openTiles"] != 0) {
-        if (sessionMapData.players["p2"].active == false && sessionMapData.vars["playerCount"] != 2) {
-            while (sessionMapData.players["p2"].active != true) {
-                document.getElementById(randomValidID()).src = sessionMapData.assets["p2"];
-                sessionMapData.vars["openTiles"]--;
-                sessionMapData.players["p2"].xPos = sessionMapData.vars["randX"];
-                sessionMapData.players["p2"].yPos = sessionMapData.vars["randY"];
-                sessionMapData.vars["playerCount"] += 1;
-                sessionMapData.players["p2"].active = true;
-            }
-        } else {
-            swapTileSrc(sessionMapData.players["p2"].xPos + "_" + sessionMapData.players["p2"].yPos, randomValidID());
-            sessionMapData.players["p2"].xPos = sessionMapData.vars["randX"];
-            sessionMapData.players["p2"].yPos = sessionMapData.vars["randY"];
-        }
-    }
-}
-
-/* Game: Adds Bot */
-function addBot() {
-    if (sessionMapData.vars["openTiles"] != 0) {
-        if (sessionMapData.players["bot"].active == false && sessionMapData.vars["bots"] != 1) {
-            while (sessionMapData.players["bot"].active != true) {
-                document.getElementById(randomValidID()).src = sessionMapData.assets["bot"];
-                sessionMapData.vars["openTiles"]--;
-                sessionMapData.players["bot"].xPos = sessionMapData.vars["randX"];
-                sessionMapData.players["bot"].yPos = sessionMapData.vars["randY"];
-                sessionMapData.vars["bots"] += 1;
-                sessionMapData.players["bot"].active = true;
-            }
-        } else {
-            swapTileSrc(sessionMapData.players["bot"].xPos + "_" + sessionMapData.players["bot"].yPos, randomValidID());
-            sessionMapData.players["bot"].xPos = sessionMapData.vars["randX"];
-            sessionMapData.players["bot"].yPos = sessionMapData.vars["randY"];
-        }
-    }
-}
-
-/* Game: Updates Movement and Position if Type */
-function swapIfTile(oldID, newID) { 
-    if (isFoodTile(newID)) { // Potential for specific food point expansions here in new sub-function
-        if (document.getElementById(oldID).getAttribute("src") == sessionMapData.assets["p1"]) {
-            sessionMapData.vars["result1"]++;
-            document.getElementById("result1").innerHTML = sessionMapData.vars["result1"];
-        } else if (document.getElementById(oldID).getAttribute("src") == sessionMapData.assets["p2"]) {
-            sessionMapData.vars["result2"]++;
-            document.getElementById("result2").innerHTML = sessionMapData.vars["result2"];
-        }
-        swapTileSrc(oldID, newID);
-        document.getElementById(oldID).src = sessionMapData.assets["space"];
-        sessionMapData.vars["openTiles"]++;
-        return true;
-    } else if (isEntity(newID)) {
-        // Do something for consumables
-        if (document.getElementById(oldID).getAttribute("src") == sessionMapData.assets["p1"]) {
-            console.log("p1_" + document.getElementById(newID).getAttribute("src"));
-            addToInventory("p1", document.getElementById(newID).getAttribute("src"));
-        } else if (document.getElementById(oldID).getAttribute("src") == sessionMapData.assets["p2"]) {
-            console.log("p2_" + document.getElementById(newID).getAttribute("src"));
-            addToInventory("p2", document.getElementById(newID).getAttribute("src"));
-        }
-        swapTileSrc(oldID, newID);
-        document.getElementById(oldID).src = sessionMapData.assets["space"];
-        sessionMapData.vars["openTiles"]++;
-        return true;
-    } else if (isValidPlace(newID)) {
-        swapTileSrc(oldID, newID);
-        return true; 
-    } else {
-        return false;
-    }
-}
-
-/* Game: Update Inventory */
-function updateInventory() {
-    for (let x = 0; x < 16; x++) {
-        document.getElementById("p1_" + x + "i").src = sessionMapData.players.p1.inventory[x].item;
-        document.getElementById("p1_" + x + "c").src = "assets/inventory/inv" + sessionMapData.players.p1.inventory[x].hold + ".png";
-        document.getElementById("p2_" + x + "i").src = sessionMapData.players.p2.inventory[x].item;
-        document.getElementById("p2_" + x + "c").src = "assets/inventory/inv" + sessionMapData.players.p2.inventory[x].hold + ".png";
-    }
-}
-
-/* Game: Add to Inventory */
-function addToInventory(player, item) {
-    let slotIndex = checkInventory(player, item);
-    if (slotIndex >= 0) {
-        // add to inventory if space available in checkInventory return.
-        sessionMapData.players[player].inventory[slotIndex].item = item;
-        sessionMapData.players[player].inventory[slotIndex].hold += 1;
-        updateInventory();
-    } else {     
-        alert(player + " inventory full!");
-    }
-            
-}
-
-/* Helper: Returns first available space if item is not in inventory */
-function checkInventory(player, item) {
-    let slotIndex = 0;
-    while (slotIndex < 16) {
-        let src = sessionMapData.players[player].inventory[slotIndex].item;
-        let itemCount = sessionMapData.players[player].inventory[slotIndex].hold;
-        if (src == item && itemCount < 64) {
-            return slotIndex;
-        } else if (src == "assets/blank.png") {
-            return slotIndex;
-        } 
-        slotIndex++;
-    }
-    if (slotIndex >= 16) {
-        return -1;
-    }
-}
-
-/* Game: Time and Win Condition */
+/* [Main] Game timer and win condition definitions*/
 async function timer(time) {
     document.getElementById("start").style = "display: none;";
     if (time == undefined) {
@@ -458,7 +313,6 @@ async function timer(time) {
     }
     await delay(1000);
     document.getElementById("alert").innerHTML = endMessage;
-    fillBoard("food");
     await delay(5000);
     document.getElementById("alert").innerHTML = ".";
     document.getElementById("alert").style = "color: white;";
@@ -466,50 +320,274 @@ async function timer(time) {
     document.getElementById("start").innerHTML = "<button onclick='start()'>Play Again?</button>";
 }
 
-/* Game Start Function */
-function start() {
+/* [Main] Game initialization sequence */
+async function start() {
     addPlayer1();
     addPlayer2();
     spawnTile(sessionMapData.assets["wall"]);
     spawnTile(sessionMapData.assets["wall"]);
     spawnTile(sessionMapData.assets["wall"]);
     spawnFood();
+    timer(30);
+    await delay(5000);
     spawnFood();
+    await delay(5000);
     spawnFood();
-    timer(25);
 }
 
-/* Test Code Startup */
+/* [Main] Test code execution */
 function runTest() {
+    document.getElementById("alert").innerHTML = "Test Code Running!";
+
+    generateRandomMap();
 }
 
 /* ############################################################################################################################# */
-/* #################################################[ RANDOM/GENERATION HELPERS ]############################################### */
+/* ####################################################[ MODULE INITIALIZATION ]################################################ */
 /* ############################################################################################################################# */
 
-/* Helper: Returns random ID */
-function randomID() {
-    let randX = Math.floor(Math.random() * sessionMapData.vars["xSize"]);
-    let randY = Math.floor(Math.random() * sessionMapData.vars["ySize"]);
-    let tileID = randX + "_" + randY;
-    sessionMapData.vars["randX"] = randX;
-    sessionMapData.vars["randY"] = randY;
-    return tileID;
-}
-
-/* Helper: Returns random valid ID*/
-function randomValidID() {
-    while (isValidPlace(randomID()) != true) {
-        isValidPlace(randomID());
+/* [Module] Initializes game board map */
+function initializeBoard(xInput, yInput) {
+    sessionMapData.vars["xSize"] = xInput;
+    sessionMapData.vars["ySize"] = yInput;
+    sessionMapData.vars["openTiles"] = xInput * yInput;
+    let boardTextArray = [];
+    boardTextArray.push("<table>");
+    for (let i = 0; i < sessionMapData.vars["ySize"]; i++) {
+        boardTextArray.push("<tr>");
+        for (let j = 0; j < sessionMapData.vars["xSize"]; j++) {
+            let newString = '<td><img id="' + j + '_' + i + '" class="back" src="' + sessionMapData.assets["space"] + '"><p class="posHint" style="margin:0; padding:0; font-size: 0.5vw; display: none; position: absolute; bottom: 0px; right: 0px;">(' + j + ',' + i + ')</p></td>';
+            boardTextArray.push(newString);
+        }
+        boardTextArray.push("</tr>");
     }
-    let tileID = sessionMapData.vars["randX"] + "_" + sessionMapData.vars["randY"];
-    return tileID;
+    boardTextArray.push("</table>");
+    let boardText = boardTextArray.join("");
+    document.getElementById("board").innerHTML = boardText;
 }
 
-/* Helper: Returns random food type for generation */
-function randomFoodType() {
-    let amt = Math.floor(Math.random() * sessionMapData.assets["foodSrcs"].length);
-    return sessionMapData.assets["foodSrcs"][amt];
+/* [Module] Initializes sandbox menu */
+function initializeSandboxMenu() {
+    document.getElementById("toolbox").innerHTML = '<div><button onclick="spawnFood()">Spawn Food</button><button onclick="addTile(' + "'food'" + ')">Add Food</button><button onclick="clearFood()">Clear Food</button><button onclick="fillBoard()">Clear Board</button></div>'
+}
+
+/* [Module] Initializes debug menu for testing */
+function toggleDebugMenu() {
+    // If empty, initialize
+    if (document.getElementById("debugMenu").innerHTML == "") {
+        document.getElementById("title").innerHTML = "Monster Tiles Sandbox (" + session_id + ")";
+        document.getElementById("debugMenu").innerHTML = '<div><button onclick="timer()">Time</button><button onclick="togglePosHint()">Show Positions</button><br><div id="devClock"></div></div>';
+        devClock(300);
+    // If hidden, show
+    } else if (document.getElementById("debugMenu").getAttribute("style") == "display: none;"){ // If Hidden, Show
+        document.getElementById("title").innerHTML = "Monster Tiles Sandbox (" + session_id + ")";
+        document.getElementById("debugMenu").style = "display: flex;";
+    // If not hidden, hide;
+    } else {
+        document.getElementById("title").innerHTML = "Monster Tiles Sandbox";
+        document.getElementById("debugMenu").style = "display: none;";
+    }
+}
+
+/* [Module] Variable Clock for Debugging */
+async function devClock(amt) {
+    if (document.getElementById("devClock").innerHTML == "") {
+        let clock = amt || prompt("How much time do you need (in seconds)?") || 600;
+        clock *= 10;
+        document.getElementById("devClock").innerHTML = '<div style="width: 12vw;"><p>Map: <span id="xSize"></span> &#10761; <span id="ySize"></span> | XY-P1: (<span id="xPos"></span>,<span id="yPos"></span>) | XY-P2: (<span id="x2Pos"></span>,<span id="y2Pos"></span>)</p><p>rand-X: <span id="randX"></span> | rand-Y: <span id="randY"></span></p><p>playerCount: <span id="playerCount"></span> | openTiles: <span id="openTiles"></span></p><p>gameClock: <span id="gameClock"></span> </p><p>active: <span id="active"></span> | active1: <span id="active1"></span> | active2: <span id="active2"></span> | Clock: <span id="clock"></span></p><p>drawMode: <span id="drawMode"></span></p></div>';
+        for (let i = 0; i < clock; i++) {
+            document.getElementById("xSize").innerHTML = sessionMapData.vars["xSize"];
+            document.getElementById("ySize").innerHTML = sessionMapData.vars["ySize"];
+            document.getElementById("xPos").innerHTML = sessionMapData.players["p1"].xPos;
+            document.getElementById("yPos").innerHTML = sessionMapData.players["p1"].yPos;
+            document.getElementById("x2Pos").innerHTML = sessionMapData.players["p2"].xPos;
+            document.getElementById("y2Pos").innerHTML = sessionMapData.players["p2"].yPos;
+            document.getElementById("randX").innerHTML = sessionMapData.vars["randX"];
+            document.getElementById("randY").innerHTML = sessionMapData.vars["randY"];
+            document.getElementById("playerCount").innerHTML = sessionMapData.vars["playerCount"];
+            document.getElementById("result1").innerHTML = sessionMapData.vars["result1"];
+            document.getElementById("result2").innerHTML = sessionMapData.vars["result2"];
+            document.getElementById("openTiles").innerHTML = sessionMapData.vars["openTiles"];
+            document.getElementById("active").innerHTML = sessionMapData.players["bot"].active;
+            document.getElementById("active1").innerHTML = sessionMapData.players["p1"].active;
+            document.getElementById("active2").innerHTML = sessionMapData.players["p2"].active;
+            document.getElementById("gameClock").innerHTML = sessionMapData.vars["gameClock"] / 10;
+            document.getElementById("clock").innerHTML = i / 10;
+            document.getElementById("drawMode").innerHTML = sessionMapData.drawMode["drawMode"];
+            await delay(100);
+        }
+        await delay(500);
+        document.getElementById("devClock").innerHTML = "<p onclick='devClock()'>Dev Clock Timer Up!</p>";
+        await delay(1000);
+        document.getElementById("devClock").innerHTML = "";
+    } else {
+        document.getElementById("devClock").innerHTML == "";
+    }
+}
+
+/* ############################################################################################################################# */
+/* #######################################################[ PLAYER LOGIC ]###################################################### */
+/* ############################################################################################################################# */
+
+/* [Player] Adds red monster player 1 to game */
+function addPlayer1() {
+    if (sessionMapData.vars["openTiles"] != 0) {
+        if (sessionMapData.players["p1"].active == false && sessionMapData.vars["playerCount"] != 2) {
+            while (sessionMapData.players["p1"].active != true) {
+                document.getElementById(randomValidID()).src = sessionMapData.assets["p1"];
+                sessionMapData.vars["openTiles"]--;
+                sessionMapData.players["p1"].xPos = sessionMapData.vars["randX"];
+                sessionMapData.players["p1"].yPos = sessionMapData.vars["randY"];
+                sessionMapData.vars["playerCount"] += 1;
+                sessionMapData.players["p1"].active = true;
+            }
+        } else {
+            swapTileSrc(sessionMapData.players["p1"].xPos + "_" + sessionMapData.players["p1"].yPos, randomValidID());
+            sessionMapData.players["p1"].xPos = sessionMapData.vars["randX"];
+            sessionMapData.players["p1"].yPos = sessionMapData.vars["randY"];
+        }
+    }
+}
+
+/* [Player] Adds blue monster player 2 to game */
+function addPlayer2() {
+    if (sessionMapData.vars["openTiles"] != 0) {
+        if (sessionMapData.players["p2"].active == false && sessionMapData.vars["playerCount"] != 2) {
+            while (sessionMapData.players["p2"].active != true) {
+                document.getElementById(randomValidID()).src = sessionMapData.assets["p2"];
+                sessionMapData.vars["openTiles"]--;
+                sessionMapData.players["p2"].xPos = sessionMapData.vars["randX"];
+                sessionMapData.players["p2"].yPos = sessionMapData.vars["randY"];
+                sessionMapData.vars["playerCount"] += 1;
+                sessionMapData.players["p2"].active = true;
+            }
+        } else {
+            swapTileSrc(sessionMapData.players["p2"].xPos + "_" + sessionMapData.players["p2"].yPos, randomValidID());
+            sessionMapData.players["p2"].xPos = sessionMapData.vars["randX"];
+            sessionMapData.players["p2"].yPos = sessionMapData.vars["randY"];
+        }
+    }
+}
+
+/* [Player] Adds green monster bot to game */
+function addBot() {
+    if (sessionMapData.vars["openTiles"] != 0) {
+        if (sessionMapData.players["bot"].active == false && sessionMapData.vars["bots"] != 1) {
+            while (sessionMapData.players["bot"].active != true) {
+                document.getElementById(randomValidID()).src = sessionMapData.assets["bot"];
+                sessionMapData.vars["openTiles"]--;
+                sessionMapData.players["bot"].xPos = sessionMapData.vars["randX"];
+                sessionMapData.players["bot"].yPos = sessionMapData.vars["randY"];
+                sessionMapData.vars["bots"] += 1;
+                sessionMapData.players["bot"].active = true;
+            }
+        } else {
+            swapTileSrc(sessionMapData.players["bot"].xPos + "_" + sessionMapData.players["bot"].yPos, randomValidID());
+            sessionMapData.players["bot"].xPos = sessionMapData.vars["randX"];
+            sessionMapData.players["bot"].yPos = sessionMapData.vars["randY"];
+        }
+    }
+}
+
+/* ############################################################################################################################# */
+/* ######################################################[ MOVEMENT LOGIC ]##################################################### */
+/* ############################################################################################################################# */
+
+/* [Movement] Updates movement position by tile type */
+function moveTile(oldID, newID) { 
+    let subject = document.getElementById(oldID).getAttribute("src");
+    let target = document.getElementById(newID).getAttribute("src");
+    // Target tile is food tile, increment score, swap src, set old tile to space, increment openTiles
+    if (isFood(newID)) { 
+        // Potential for specific food point expansions here in new sub-function
+        if (subject == sessionMapData.assets["p1"]) {
+            sessionMapData.vars["result1"]++;
+            document.getElementById("result1").innerHTML = sessionMapData.vars["result1"];
+        } else if (subject == sessionMapData.assets["p2"]) {
+            sessionMapData.vars["result2"]++;
+            document.getElementById("result2").innerHTML = sessionMapData.vars["result2"];
+        }
+        swapTileSrc(oldID, newID);
+        document.getElementById(oldID).src = sessionMapData.assets["space"];
+        sessionMapData.vars["openTiles"]++;
+        return true;
+    // Target tile is entity tile, add to inventory, swap src, set old tile to space, increment openTiles
+    } else if (isItem(newID)) {
+        // Potential to do something for consumables
+        if (subject == sessionMapData.assets["p1"]) {
+            addToInventory("p1", target);
+        } else if (subject == sessionMapData.assets["p2"]) {
+            addToInventory("p2", target);
+        }
+        swapTileSrc(oldID, newID);
+        document.getElementById(oldID).src = sessionMapData.assets["space"];
+        sessionMapData.vars["openTiles"]++;
+        return true;
+    // Target tile is valid placement, swap src, set old tile to space, increment openTiles
+    } else if (isValidPlace(newID)) {
+        swapTileSrc(oldID, newID);
+        return true; 
+    // Target tile is invalid placement, do nothing (e.g. wall, player, out of bounds)
+    } else {
+        return false;
+    }
+}
+
+/* [Helper] Swap tile srcs by tileID */
+function swapTileSrc(tileIDa, tileIDb) {
+    let tempSrc = document.getElementById(tileIDb).getAttribute("src");
+    document.getElementById(tileIDb).src = document.getElementById(tileIDa).getAttribute("src");
+    document.getElementById(tileIDa).src = tempSrc;
+}
+
+/* ############################################################################################################################# */
+/* ######################################################[ INVENTORY LOGIC ]#################################################### */
+/* ############################################################################################################################# */
+
+/* Game: Update Inventory */
+function updateInventory() {
+    for (let x = 0; x < 16; x++) {
+        // Updates Player 1 Items & Counts
+        document.getElementById("p1_" + x + "i").src = sessionMapData.players.p1.inventory[x].item;
+        if (sessionMapData.players.p1.inventory[x].count > 1)
+            document.getElementById("p1_" + x + "c").src = "assets/inventory/inv" + sessionMapData.players.p1.inventory[x].count + ".png";
+        // Updates Player 2 Items & Counts
+        document.getElementById("p2_" + x + "i").src = sessionMapData.players.p2.inventory[x].item;
+        if (sessionMapData.players.p2.inventory[x].count > 1)
+            document.getElementById("p2_" + x + "c").src = "assets/inventory/inv" + sessionMapData.players.p2.inventory[x].count + ".png";
+    }
+}
+
+/* Game: Add to Inventory */
+function addToInventory(player, item) {
+    let slotIndex = checkInventory(player, item);
+    if (slotIndex >= 0) {
+        // add to inventory if space available in checkInventory return.
+        sessionMapData.players[player].inventory[slotIndex].item = item;
+        sessionMapData.players[player].inventory[slotIndex].count += 1;
+        updateInventory();
+    } else {     
+        alert(player + " inventory full!");
+    }
+            
+}
+
+/* Helper: Returns first available space if item is not in inventory */
+function checkInventory(player, item) {
+    let slotIndex = 0;
+    while (slotIndex < 16) {
+        let src = sessionMapData.players[player].inventory[slotIndex].item;
+        let itemCount = sessionMapData.players[player].inventory[slotIndex].count;
+        if (src == item && itemCount < 64) {
+            return slotIndex;
+        } else if (src == "assets/blank.png") {
+            return slotIndex;
+        } 
+        slotIndex++;
+    }
+    if (slotIndex >= 16) {
+        return -1;
+    }
 }
 
 /* ############################################################################################################################# */
@@ -520,26 +598,29 @@ function randomFoodType() {
 function isValidPlace(tileID) {
     const src = getSrc(tileID);
     if (src === null) return false;
-    return !isFoodTile(tileID) &&
-           src !== sessionMapData.assets["p1"] &&
-           src !== sessionMapData.assets["p2"] &&
-           src !== sessionMapData.assets["wall"];
+    return !isFood(tileID) && !isItem(tileID) && !isEntity(tileID);
 }
 
-/* Helper: Returns true if food tile for scoring, placement */
-function isFoodTile(tileID) {
+/* Helper: Returns true if tile is food (can be scored) */
+function isFood(tileID) {
     const src = getSrc(tileID);
-    return src !== null && sessionMapData.assets["foodSrcs"].includes(src);
+    return src !== null && sessionMapData.assets["food"].includes(src);
 }
 
-/* Helper: Returns true if item is entity (can be picked up and added to inventory) */
+/* Helper: Returns true if tile is item (can be picked up and added to inventory) */
+function isItem(tileID) {
+    const src = getSrc(tileID);
+    return src !== null && sessionMapData.assets["item"].includes(src);
+}
+
+/* Helper: Returns true if tile is entity (cannot be collided with) */
 function isEntity(tileID) {
     const src = getSrc(tileID);
-    return src !== null && sessionMapData.assets["entities"].includes(src);
+    return src !== null && sessionMapData.assets["entity"].includes(src);
 }
 
 /* ############################################################################################################################# */
-/* #######################################################[ MAP/GENERATION ]#################################################### */
+/* ####################################################[ MAP GENERATION LOGIC ]################################################# */
 /* ############################################################################################################################# */
 
 /* Map: Set tile image src by position */
@@ -558,180 +639,18 @@ function setTileSrc(tileSrc, x, y) {
         sessionMapData.players["p2"].active = false;
         sessionMapData.vars["playerCount"]--;
     }
-    // Input not space; target is space
+    // Input subject not space, target is space
     if (tileSrc != sessionMapData.assets["space"] && document.getElementById(tileID).getAttribute("src") == sessionMapData.assets["space"]) {
         sessionMapData.vars["openTiles"]--;
         document.getElementById(tileID).src = tileSrc;
-    // Input is space; target isn't space
+    // Input subject is space, target isn't space
     } else if (tileSrc == sessionMapData.assets["space"] && document.getElementById(tileID).getAttribute("src") != sessionMapData.assets["space"]) {
         sessionMapData.vars["openTiles"]++;
         document.getElementById(tileID).src = tileSrc;
-    // Input not space; target not space; does not change openTiles.
+    // Input subject not space, target not space; no change to openTiles
     } else {
         document.getElementById(tileID).src = tileSrc;
     }
-}
-
-/* Map: Set tile image src in Medium Dot Shape */
-function dotMid(tileSrc, x, y) {
-    setTileSrc(tileSrc, x, y);
-    setTileSrc(tileSrc, x + 1, y);
-    setTileSrc(tileSrc, x - 1, y);
-    setTileSrc(tileSrc, x, y + 1);
-    setTileSrc(tileSrc, x, y - 1);
-}
-
-/* Map: Set tile image src in Largest Dot Shape */
-function dotMax(tileSrc, x, y) {
-    setTileSrc(tileSrc, x, y);
-    setTileSrc(tileSrc, x + 1, y);
-    setTileSrc(tileSrc, x + 1, y + 1);
-    setTileSrc(tileSrc, x + 1, y - 1);
-    setTileSrc(tileSrc, x - 1, y);
-    setTileSrc(tileSrc, x - 1, y + 1);
-    setTileSrc(tileSrc, x - 1, y - 1);
-    setTileSrc(tileSrc, x, y + 1);
-    setTileSrc(tileSrc, x, y - 1);
-    setTileSrc(tileSrc, x + 2, y);
-    setTileSrc(tileSrc, x + 2, y + 1);
-    setTileSrc(tileSrc, x + 2, y - 1);
-    setTileSrc(tileSrc, x - 2, y);
-    setTileSrc(tileSrc, x - 2, y + 1);
-    setTileSrc(tileSrc, x - 2, y - 1);
-    setTileSrc(tileSrc, x, y + 2);
-    setTileSrc(tileSrc, x + 1, y + 2);
-    setTileSrc(tileSrc, x - 1, y + 2);
-    setTileSrc(tileSrc, x, y - 2);
-    setTileSrc(tileSrc, x + 1, y - 2);
-    setTileSrc(tileSrc, x - 1, y - 2);
-}
-
-/* Map: Set tile image src in Horizontal Line */
-function hLine(tileSrc, y) {
-    for (let x = 0; x < sessionMapData.vars["xSize"]; x++) {
-        setTileSrc(tileSrc, x, y);
-    }
-}
-
-/* Map: Set tile image src in Vertical Line */
-function vLine(tileSrc, x) {
-    for (let y = 0; y < sessionMapData.vars["ySize"]; y++) {
-        setTileSrc(tileSrc, x, y);
-    }
-}
-
-/* Map: Set tile image src in T-Shaped Cross */
-function tCross(tileSrc, x, y) {
-    for (let x = 0; x < sessionMapData.vars["xSize"]; x++) {
-        setTileSrc(tileSrc, x, y);
-    }
-    for (let y = 0; y < sessionMapData.vars["ySize"]; y++) {
-        setTileSrc(tileSrc, x, y);
-    }
-}
-
-/* Map: Set tile image src in Top-Down Left-Right Diagonal Line */
-function dLineA(tileSrc, x, y) {
-    let xPos = x;
-    let yPos = y;
-    while (xPos != 0 && yPos != 0) {
-        xPos--;
-        yPos--;
-    }
-    setTileSrc(tileSrc, xPos, yPos);
-    while (xPos < sessionMapData.vars["xSize"] - 1 && yPos < sessionMapData.vars["ySize"] - 1) {
-        xPos++;
-        yPos++;
-        setTileSrc(tileSrc, xPos, yPos);
-    }
-}
-
-/* Map: Set tile image src in Top-Down Right-Left Diagonal Line */
-function dLineB(tileSrc, x, y) {
-    let xPos = x;
-    let yPos = y;
-    while (xPos < sessionMapData.vars["xSize"] - 1 && yPos != 0) {
-        xPos++;
-        yPos--;
-    }
-    setTileSrc(tileSrc, xPos, yPos);
-    while (xPos != 0 && yPos < sessionMapData.vars["ySize"] - 1) {
-        xPos--;
-        yPos++;
-        setTileSrc(tileSrc, xPos, yPos);
-    }
-}
-
-/* Map: Set tile image src in X-Shaped Cross */
-function xCross(tileSrc, x, y) {
-    let xPos = x;
-    let yPos = y;
-    while (xPos != 0 && yPos != 0) {
-        xPos--;
-        yPos--;
-    }
-    setTileSrc(tileSrc, xPos, yPos);
-    while (xPos < sessionMapData.vars["xSize"] - 1 && yPos < sessionMapData.vars["ySize"] - 1) {
-        xPos++;
-        yPos++;
-        setTileSrc(tileSrc, xPos, yPos);
-    }
-    xPos = x;
-    yPos = y;
-    while (xPos < sessionMapData.vars["xSize"] - 1 && yPos != 0) {
-        xPos++;
-        yPos--;
-    }
-    setTileSrc(tileSrc, xPos, yPos);
-    while (xPos != 0 && yPos < sessionMapData.vars["ySize"] - 1) {
-        xPos--;
-        yPos++;
-        setTileSrc(tileSrc, xPos, yPos);
-    }
-}
-
-/* Map: Set tile image src in Unfilled Rectangle */
-function rect() {
-    let lilX = sessionMapData.drawMode["x1"];
-    let bigX = sessionMapData.drawMode["x2"];
-    let lilY = sessionMapData.drawMode["y1"];
-    let bigY = sessionMapData.drawMode["y2"];
-    // Sort the bounds
-    if (sessionMapData.drawMode["x1"] > sessionMapData.drawMode["x2"]) {
-        bigX = sessionMapData.drawMode["x1"];
-        lilX = sessionMapData.drawMode["x2"];
-    }
-    if (sessionMapData.drawMode["y1"] > sessionMapData.drawMode["y2"]) {
-        bigY = sessionMapData.drawMode["y1"];
-        lilY = sessionMapData.drawMode["y2"];
-    }
-    for (let x = lilX; x < bigX; x++) {
-        setTileSrc(sessionMapData.drawMode["inputTile"], x, lilY);
-        setTileSrc(sessionMapData.drawMode["inputTile"], x, bigY);
-    }
-    for (let y = lilY; y < bigY; y++) {
-        setTileSrc(sessionMapData.drawMode["inputTile"], lilX, y);
-        setTileSrc(sessionMapData.drawMode["inputTile"], bigX, y);
-    }
-    setTileSrc(sessionMapData.drawMode["inputTile"], bigX, bigY)
-    // Handle bigger than size;
-    // Handle click placement mode
-}
-
-/* Helper: DrawMode rect() Corner */
-function cornerA(x, y) {
-    sessionMapData.drawMode["x1"] = x;
-    sessionMapData.drawMode["y1"] = y;
-    setTileSrc(sessionMapData.drawMode["inputTile"], x, y);
-    setDrawMode("clickcbox");
-}
-
-/* Helper: DrawMode rect() Corner */
-function cornerB(x, y) {
-    sessionMapData.drawMode["x2"] = x;
-    sessionMapData.drawMode["y2"] = y;
-    rect();
-    setDrawMode("clickbox");
 }
 
 /* Map: Fill board with tileSrc, reset variables */
@@ -802,6 +721,31 @@ function addTile(tileSrc, amt) {
     }
 }
 
+/* Helper: Returns random ID */
+function randomID() {
+    let randX = Math.floor(Math.random() * sessionMapData.vars["xSize"]);
+    let randY = Math.floor(Math.random() * sessionMapData.vars["ySize"]);
+    let tileID = randX + "_" + randY;
+    sessionMapData.vars["randX"] = randX;
+    sessionMapData.vars["randY"] = randY;
+    return tileID;
+}
+
+/* Helper: Returns random valid ID*/
+function randomValidID() {
+    while (isValidPlace(randomID()) != true) {
+        isValidPlace(randomID());
+    }
+    let tileID = sessionMapData.vars["randX"] + "_" + sessionMapData.vars["randY"];
+    return tileID;
+}
+
+/* Helper: Returns random food type for generation */
+function randomFoodType() {
+    let amt = Math.floor(Math.random() * sessionMapData.assets["food"].length);
+    return sessionMapData.assets["food"][amt];
+}
+
 /* Map: Spawn random amount of food */
 function spawnFood() {
     if (sessionMapData.vars["openTiles"] == 0) {alert("No open tiles!")};
@@ -818,17 +762,236 @@ function spawnFood() {
 function clearFood() {
     for (let i = 0; i < sessionMapData.vars["ySize"]; i++) {
         for (let j = 0; j < sessionMapData.vars["xSize"]; j++) {
-            if (isFoodTile(j + "_" + i)) {
+            if (isFood(j + "_" + i)) {
                 document.getElementById(j + "_" + i).src = sessionMapData.assets["space"];
                 sessionMapData.vars["openTiles"]++;
             }
         }
     }
-    sessionMapData.vars["result1"] = 0;
-    sessionMapData.vars["result2"] = 0;
 }
 
-/* Tile: Flip tile from wall to space and vice versa */
+/* Map: Swap tile source type */
+// function swapSource(tileTypeA, tileTypeB) {
+//     for (let i = 0; i < sessionMapData.vars["ySize"]; i++) {
+//         for (let j = 0; j < sessionMapData.vars["xSize"]; j++) {
+//             let tileID = j + "_" + i;
+//             if (document.getElementById(tileID).getAttribute("src") == "assets/" + tileTypeA + ".png") {
+//                 document.getElementById(tileID).src = "assets/" + tileTypeB + ".png";
+//                 sessionMapData.vars["openTiles"]--;
+//             } else if (document.getElementById(tileID).getAttribute("src") == "assets/" + tileTypeB + ".png") {
+//                 document.getElementById(tileID).src = "assets/" + tileTypeA + ".png";
+//                 sessionMapData.vars["openTiles"]++;
+//             }
+//         }
+//     }
+// }
+
+/* [WIP] Generate random map */
+// function generateRandomMap() {
+//     randomValidID();
+//     dotMid(sessionMapData.assets["wall"], sessionMapData.vars["randX"], sessionMapData.vars["randY"]);
+    
+// }
+
+/* ############################################################################################################################# */
+/* #######################################################[ DRAWMODE LOGIC ]#################################################### */
+/* ############################################################################################################################# */
+
+/* [Drawmode: Shape] Medium brush */
+function dotMid(tileSrc, x, y) {
+    setTileSrc(tileSrc, x, y);
+    setTileSrc(tileSrc, x + 1, y);
+    setTileSrc(tileSrc, x - 1, y);
+    setTileSrc(tileSrc, x, y + 1);
+    setTileSrc(tileSrc, x, y - 1);
+}
+
+/* [Drawmode: Shape] Large brush */
+function dotMax(tileSrc, x, y) {
+    setTileSrc(tileSrc, x, y);
+    setTileSrc(tileSrc, x + 1, y);
+    setTileSrc(tileSrc, x + 1, y + 1);
+    setTileSrc(tileSrc, x + 1, y - 1);
+    setTileSrc(tileSrc, x - 1, y);
+    setTileSrc(tileSrc, x - 1, y + 1);
+    setTileSrc(tileSrc, x - 1, y - 1);
+    setTileSrc(tileSrc, x, y + 1);
+    setTileSrc(tileSrc, x, y - 1);
+    setTileSrc(tileSrc, x + 2, y);
+    setTileSrc(tileSrc, x + 2, y + 1);
+    setTileSrc(tileSrc, x + 2, y - 1);
+    setTileSrc(tileSrc, x - 2, y);
+    setTileSrc(tileSrc, x - 2, y + 1);
+    setTileSrc(tileSrc, x - 2, y - 1);
+    setTileSrc(tileSrc, x, y + 2);
+    setTileSrc(tileSrc, x + 1, y + 2);
+    setTileSrc(tileSrc, x - 1, y + 2);
+    setTileSrc(tileSrc, x, y - 2);
+    setTileSrc(tileSrc, x + 1, y - 2);
+    setTileSrc(tileSrc, x - 1, y - 2);
+}
+
+/* [Drawmode: Shape] Horizontal line */
+function hLine(tileSrc, y) {
+    for (let x = 0; x < sessionMapData.vars["xSize"]; x++) {
+        setTileSrc(tileSrc, x, y);
+    }
+}
+
+/* [Drawmode: Shape] Vertical line */
+function vLine(tileSrc, x) {
+    for (let y = 0; y < sessionMapData.vars["ySize"]; y++) {
+        setTileSrc(tileSrc, x, y);
+    }
+}
+
+/* [Drawmode: Shape] Plus-shaped (+) cross */
+function tCross(tileSrc, x, y) {
+    for (let x = 0; x < sessionMapData.vars["xSize"]; x++) {
+        setTileSrc(tileSrc, x, y);
+    }
+    for (let y = 0; y < sessionMapData.vars["ySize"]; y++) {
+        setTileSrc(tileSrc, x, y);
+    }
+}
+
+/* [Drawmode: Shape] Backslash (\) diagonal line */
+function dLineA(tileSrc, x, y) {
+    let xPos = x;
+    let yPos = y;
+    while (xPos != 0 && yPos != 0) {
+        xPos--;
+        yPos--;
+    }
+    setTileSrc(tileSrc, xPos, yPos);
+    while (xPos < sessionMapData.vars["xSize"] - 1 && yPos < sessionMapData.vars["ySize"] - 1) {
+        xPos++;
+        yPos++;
+        setTileSrc(tileSrc, xPos, yPos);
+    }
+}
+
+/* [Drawmode: Shape] Forward slash (/) diagonal line */
+function dLineB(tileSrc, x, y) {
+    let xPos = x;
+    let yPos = y;
+    while (xPos < sessionMapData.vars["xSize"] - 1 && yPos != 0) {
+        xPos++;
+        yPos--;
+    }
+    setTileSrc(tileSrc, xPos, yPos);
+    while (xPos != 0 && yPos < sessionMapData.vars["ySize"] - 1) {
+        xPos--;
+        yPos++;
+        setTileSrc(tileSrc, xPos, yPos);
+    }
+}
+
+/* [Drawmode: Shape] X-shaped (x) cross */
+function xCross(tileSrc, x, y) {
+    let xPos = x;
+    let yPos = y;
+    while (xPos != 0 && yPos != 0) {
+        xPos--;
+        yPos--;
+    }
+    setTileSrc(tileSrc, xPos, yPos);
+    while (xPos < sessionMapData.vars["xSize"] - 1 && yPos < sessionMapData.vars["ySize"] - 1) {
+        xPos++;
+        yPos++;
+        setTileSrc(tileSrc, xPos, yPos);
+    }
+    xPos = x;
+    yPos = y;
+    while (xPos < sessionMapData.vars["xSize"] - 1 && yPos != 0) {
+        xPos++;
+        yPos--;
+    }
+    setTileSrc(tileSrc, xPos, yPos);
+    while (xPos != 0 && yPos < sessionMapData.vars["ySize"] - 1) {
+        xPos--;
+        yPos++;
+        setTileSrc(tileSrc, xPos, yPos);
+    }
+}
+
+/* [Drawmode: Shape] Unfilled rectangle */
+function rect() {
+    let lilX = sessionMapData.drawMode["x1"];
+    let bigX = sessionMapData.drawMode["x2"];
+    let lilY = sessionMapData.drawMode["y1"];
+    let bigY = sessionMapData.drawMode["y2"];
+    // Sort the bounds
+    if (sessionMapData.drawMode["x1"] > sessionMapData.drawMode["x2"]) {
+        bigX = sessionMapData.drawMode["x1"];
+        lilX = sessionMapData.drawMode["x2"];
+    }
+    if (sessionMapData.drawMode["y1"] > sessionMapData.drawMode["y2"]) {
+        bigY = sessionMapData.drawMode["y1"];
+        lilY = sessionMapData.drawMode["y2"];
+    }
+    for (let x = lilX; x < bigX; x++) {
+        setTileSrc(sessionMapData.drawMode["inputTile"], x, lilY);
+        setTileSrc(sessionMapData.drawMode["inputTile"], x, bigY);
+    }
+    for (let y = lilY; y < bigY; y++) {
+        setTileSrc(sessionMapData.drawMode["inputTile"], lilX, y);
+        setTileSrc(sessionMapData.drawMode["inputTile"], bigX, y);
+    }
+    setTileSrc(sessionMapData.drawMode["inputTile"], bigX, bigY)
+    // Handle bigger than size;
+    // Handle click placement mode
+}
+
+/* [Helper] rect() corner A */
+function cornerA(x, y) {
+    sessionMapData.drawMode["x1"] = x;
+    sessionMapData.drawMode["y1"] = y;
+    setTileSrc(sessionMapData.drawMode["inputTile"], x, y);
+    setDrawMode("clickcbox");
+}
+
+/* [Helper] rect() corner B */
+function cornerB(x, y) {
+    sessionMapData.drawMode["x2"] = x;
+    sessionMapData.drawMode["y2"] = y;
+    rect();
+    setDrawMode("clickbox");
+}
+
+/* [Helper] rect() corner A previewer */
+// function cornerAhover(x, y) {
+//     sessionMapData.drawMode["x1"] = x;
+//     sessionMapData.drawMode["y1"] = y;
+//     setTileSrc(sessionMapData.drawMode["inputTile"], x, y);
+//     setDrawMode("hovercbox");
+// }
+
+/* [Helper] rect() corner B previewer */
+// function cornerBhover(x, y) {
+//     sessionMapData.drawMode["x2"] = x;
+//     sessionMapData.drawMode["y2"] = y;
+//     rect();
+//     setDrawMode("clickbox");
+// }
+
+/* [DrawMode: Tool] Flips all tiles from wall to space or vice versa */
+function flipper() {
+    // Flips all tiles on board
+    for (let i = 0; i < sessionMapData.vars["ySize"]; i++) {
+        for (let j = 0; j < sessionMapData.vars["xSize"]; j++) {
+            flipTile(j, i);
+        }
+    }
+    // Toggles flip icon
+    if (document.getElementById("flipIcon").getAttribute("src") == "assets/drawmode/flipA.png") {
+        document.getElementById("flipIcon").src = "assets/drawmode/flipB.png";
+    } else if (document.getElementById("flipIcon").getAttribute("src") == "assets/drawmode/flipB.png") {
+        document.getElementById("flipIcon").src = "assets/drawmode/flipA.png";
+    }
+}
+
+/* [Helper] flipper() flips single tile from wall to space or vice versa */
 function flipTile(x, y) {
     let tileID = x + "_" + y;
     if (document.getElementById(tileID).getAttribute("src") == sessionMapData.assets["space"]) {
@@ -840,329 +1003,109 @@ function flipTile(x, y) {
     }
 }
 
-/* Map: Swap tile source type */
-function swapSource(tileTypeA, tileTypeB) {
-    for (let i = 0; i < sessionMapData.vars["ySize"]; i++) {
-        for (let j = 0; j < sessionMapData.vars["xSize"]; j++) {
-            let tileID = j + "_" + i;
-            if (document.getElementById(tileID).getAttribute("src") == "assets/" + tileTypeA + ".png") {
-                document.getElementById(tileID).src = "assets/" + tileTypeB + ".png";
-                sessionMapData.vars["openTiles"]--;
-            } else if (document.getElementById(tileID).getAttribute("src") == "assets/" + tileTypeB + ".png") {
-                document.getElementById(tileID).src = "assets/" + tileTypeA + ".png";
-                sessionMapData.vars["openTiles"]++;
-            }
-        }
-    }
-}
-
-/* Movement: Swap tile srcs by tileID */
-function swapTileSrc(tileIDa, tileIDb) {
-    let tempSrc = document.getElementById(tileIDb).getAttribute("src");
-    document.getElementById(tileIDb).src = document.getElementById(tileIDa).getAttribute("src");
-    document.getElementById(tileIDa).src = tempSrc;
-}
-
 /* ############################################################################################################################# */
 /* ####################################################[ DRAWMODE/STYLING ]##################################################### */
 /* ############################################################################################################################# */
 
 /* DrawMode: Set DrawMode */
-function setDrawMode(mode) {
+function updateDrawMode() {
+    const {tool, mode, shape, input} = sessionMapData.drawMode;
+    const tileSrc = tool === "erase"
+        ? sessionMapData.assets["space"]
+        : tool === "input"
+            ? document.getElementById(input + "Icon").getAttribute("src")
+            : sessionMapData.assets["wall"];
+    const shapes = {
+        dot: (x, y) => setTileSrc(tileSrc, x, y),
+        dotMid: (x, y) => dotMid(tileSrc, x, y),
+        dotMax: (x, y) => dotMax(tileSrc, x, y),
+        hLine: (x, y) => hLine(tileSrc, y),
+        vLine: (x, y) => vLine(tileSrc, x),
+        tCross: (x, y) => tCross(tileSrc, x, y),
+        dLineA: (x, y) => dLineA(tileSrc, x, y),
+        dLineB: (x, y) => dLineB(tileSrc, x, y),
+        xCross: (x, y) => xCross(tileSrc, x, y),
+        box: (x, y) => {
+            if (sessionMapData.drawMode["boxOn"]) {
+                cornerA(x, y);
+                sessionMapData.drawMode["boxOn"] = false;
+            } else {
+                cornerB(x, y);
+                sessionMapData.drawMode["boxOn"] = true;
+            }
+        }
+    };
+    const drawShape = shapes[shape];
+    const eventName = mode === "click" ? "onclick" : mode === "hover" ? "onmouseover" : null;
     for (let i = 0; i < sessionMapData.vars["ySize"]; i++) {
         for (let j = 0; j < sessionMapData.vars["xSize"]; j++) {
             let tile = document.getElementById(j + "_" + i);
             if (!tile) continue;
             tile.onclick = null;
             tile.onmouseover = null;
-            if (mode === "clickdot") {
-                tile.onclick = () => setTileSrc(sessionMapData.drawMode["inputTile"], j, i);
-            } else if (mode === "hoverdot") {
-                tile.onmouseover = () => setTileSrc(sessionMapData.drawMode["inputTile"], j, i);
-            } else if (mode === "clickdotMid") {
-                tile.onclick = () => dotMid(sessionMapData.drawMode["inputTile"], j, i);
-            } else if (mode === "hoverdotMid") {
-                tile.onmouseover = () => dotMid(sessionMapData.drawMode["inputTile"], j, i);
-            } else if (mode === "clickdotMax") {
-                tile.onclick = () => dotMax(sessionMapData.drawMode["inputTile"], j, i);
-            } else if (mode === "hoverdotMax") {
-                tile.onmouseover = () => dotMax(sessionMapData.drawMode["inputTile"], j, i);
-            } else if (mode === "clickhLine") {
-                tile.onclick = () => hLine(sessionMapData.drawMode["inputTile"], i);
-            } else if (mode === "hoverhLine") {
-                tile.onmouseover = () => hLine(sessionMapData.drawMode["inputTile"], i);
-            } else if (mode === "clickvLine") {
-                tile.onclick = () => vLine(sessionMapData.drawMode["inputTile"], j);
-            } else if (mode === "hovervLine") {
-                tile.onmouseover = () => vLine(sessionMapData.drawMode["inputTile"], j);
-            } else if (mode === "clickdLineA") {
-                tile.onclick = () => dLineA(sessionMapData.drawMode["inputTile"], j, i);
-            } else if (mode === "hoverdLineA") {
-                tile.onmouseover = () => dLineA(sessionMapData.drawMode["inputTile"], j, i);
-            } else if (mode === "clickdLineB") {
-                tile.onclick = () => dLineB(sessionMapData.drawMode["inputTile"], j, i);
-            } else if (mode === "hoverdLineB") {
-                tile.onmouseover = () => dLineB(sessionMapData.drawMode["inputTile"], j, i);
-            } else if (mode === "clicktCross") {
-                tile.onclick = () => tCross(sessionMapData.drawMode["inputTile"], j, i);
-            } else if (mode === "hovertCross") {
-                tile.onmouseover = () => tCross(sessionMapData.drawMode["inputTile"], j, i);
-            } else if (mode === "clickxCross") {
-                tile.onclick = () => xCross(sessionMapData.drawMode["inputTile"], j, i);
-            } else if (mode === "hoverxCross") {
-                tile.onmouseover = () => xCross(sessionMapData.drawMode["inputTile"], j, i);
-            } else if (mode === "clickbox") {
-                tile.onclick = () => cornerA(j, i);
-            } else if (mode === "hoverbox") {
-                tile.onmouseover = () => cornerAhover(j, i);
-            } else if (mode === "clickcbox") {
-                tile.onclick = () => cornerB(j, i);
-            } else if (mode === "hovercbox") {
-                tile.onmouseover = () => cornerBhover(j, i);
-            } else {
-                document.getElementById("alert").innerHTML = "Not a valid drawMode!";
-                setMode("click");
-                setShape("dot");
+            if (drawShape && eventName && !(shape === "box" && mode === "hover")) {
+                tile[eventName] = () => drawShape(j, i);
             }
         }
-    }
-    document.getElementById("drawModeCycle").innerHTML = sessionMapData.drawMode["drawMode"];
-}
-
-/* DrawMode: Cycle DrawModes */
-function drawModeCycle() { 
-    let drawMode = sessionMapData.drawMode["drawMode"];
-    if (drawMode === "clickdot") {
-        setMode("hover");
-    } else if (drawMode === "hoverdot") {
-        setMode("click");
-        setShape("hLine");
-    } else if (drawMode === "clickhLine") {
-        setShape("vLine");
-    } else if (drawMode === "hoverhLine") {
-        setShape("vLine");
-    } else if (drawMode === "clickvLine") {
-        setMode("hover");
-        setShape("hLine");
-    } else if (drawMode === "hovervLine") {
-        setMode("click");
-        setShape("dot");
-    } else {
-        setMode("click");
-        setShape("dot");
-        setInputTile(sessionMapData.assets["wall"]);
     }
 }
 
 /* DrawMode: Set tool menu */
 function setTool(tool) {
-    document.getElementById("drawIcon").style = "";
-    document.getElementById("eraseIcon").style = "";
-    document.getElementById("inputIcon").style = "";
-    document.getElementById("flipIcon").style = "";
-    if (tool == "draw") {
-        document.getElementById("drawIcon").style = "border: 1px, red, solid; background-color: #D3D3D3";
-        sessionMapData.drawMode["inputTile"] = sessionMapData.assets["wall"];
-        sessionMapData.drawMode["inputOn"] = false;
-    } else if (tool == "erase") {
-        document.getElementById("eraseIcon").style = "border: 1px, red, solid; background-color: #D3D3D3";
-        sessionMapData.drawMode["inputTile"] = sessionMapData.assets["space"];
-        sessionMapData.drawMode["inputOn"] = false;
-    } else if (tool == "input") {
-        document.getElementById("inputIcon").style = "border: 1px, red, solid; background-color: #D3D3D3";
-        sessionMapData.drawMode["inputTile"] = sessionMapData.drawMode["lastTile"];
-        sessionMapData.drawMode["inputOn"] = true;
-    }
+    // Update internal mode variables
+    sessionMapData.drawMode["lastTool"] = sessionMapData.drawMode["tool"];
+    sessionMapData.drawMode["tool"] = tool;
+    // Clear last mode icon style, update current mode icon style
+    document.getElementById(sessionMapData.drawMode["lastTool"] + "Icon").style = "";
+    document.getElementById(sessionMapData.drawMode["tool"] + "Icon").style = "border: 1px, red, solid; background-color: #D3D3D3";
+    tool === "input" ? document.getElementById("inputTileMenu").style.display = "block" : document.getElementById("inputTileMenu").style.display = "none"; 
+    updateDrawMode();
 }
 
 /* DrawMode: Set mode menu */
 function setMode(mode) {
-    document.getElementById("clickIcon").style = "";
-    document.getElementById("hoverIcon").style = "";
-    document.getElementById("bucketIcon").style = "";
-    if (mode == "click") {
-        document.getElementById("clickIcon").style = "border: 1px, red, solid; background-color: #D3D3D3";
-        sessionMapData.drawMode["mode"] = "click";
-    } else if (mode == "hover") {
-        document.getElementById("hoverIcon").style = "border: 1px, red, solid; background-color: #D3D3D3";
-        sessionMapData.drawMode["mode"] = "hover";
-    } else if (mode == "bucket") {
-        document.getElementById("bucketIcon").style = "border: 1px, red, solid; background-color: #D3D3D3";
-        sessionMapData.drawMode["mode"] = "bucket";
-    } 
-    sessionMapData.drawMode["drawMode"] = sessionMapData.drawMode["mode"] + sessionMapData.drawMode["shape"];
-    setDrawMode(sessionMapData.drawMode["drawMode"]);
+    // Update internal mode variables
+    sessionMapData.drawMode["lastMode"] = sessionMapData.drawMode["mode"];
+    sessionMapData.drawMode["mode"] = mode;
+    // Clear last mode icon style, update current mode icon style
+    document.getElementById(sessionMapData.drawMode["lastMode"] + "Icon").style = "";
+    document.getElementById(sessionMapData.drawMode["mode"] + "Icon").style = "border: 1px, red, solid; background-color: #D3D3D3";
+    updateDrawMode();
 }
 
 /* DrawMode: Set shape menu */
 function setShape(shape) {
-    document.getElementById("dotIcon").style = "";
-    document.getElementById("dotMidIcon").style = "";
-    document.getElementById("dotMaxIcon").style = "";
-    document.getElementById("hLineIcon").style = "";
-    document.getElementById("vLineIcon").style = "";
-    document.getElementById("crossIcon").style = "";
-    document.getElementById("dLineAIcon").style = "";
-    document.getElementById("dLineBIcon").style = "";
-    document.getElementById("xCrossIcon").style = "";
-    document.getElementById("boxIcon").style = "";
-    if (shape == "dot") {
-        document.getElementById("dotIcon").style = "border: 1px, red, solid; background-color: #D3D3D3";
-        sessionMapData.drawMode["shape"] = "dot";
-    } else if (shape == "dotMid") {
-        document.getElementById("dotMidIcon").style = "border: 1px, red, solid; background-color: #D3D3D3";
-        sessionMapData.drawMode["shape"] = "dotMid";
-    } else if (shape == "dotMax") {
-        document.getElementById("dotMaxIcon").style = "border: 1px, red, solid; background-color: #D3D3D3";
-        sessionMapData.drawMode["shape"] = "dotMax";
-    } else if (shape == "hLine") {
-        document.getElementById("hLineIcon").style = "border: 1px, red, solid; background-color: #D3D3D3";
-        sessionMapData.drawMode["shape"] = "hLine";
-    } else if (shape == "vLine") {
-        document.getElementById("vLineIcon").style = "border: 1px, red, solid; background-color: #D3D3D3";
-        sessionMapData.drawMode["shape"] = "vLine";
-    } else if (shape == "tCross") {
-        document.getElementById("crossIcon").style = "border: 1px, red, solid; background-color: #D3D3D3";
-        sessionMapData.drawMode["shape"] = "tCross";
-    } else if (shape == "dLineA") {
-        document.getElementById("dLineAIcon").style = "border: 1px, red, solid; background-color: #D3D3D3";
-        sessionMapData.drawMode["shape"] = "dLineA";
-    } else if (shape == "dLineB") {
-        document.getElementById("dLineBIcon").style = "border: 1px, red, solid; background-color: #D3D3D3";
-        sessionMapData.drawMode["shape"] = "dLineB";
-    } else if (shape == "xCross") {
-        document.getElementById("xCrossIcon").style = "border: 1px, red, solid; background-color: #D3D3D3";
-        sessionMapData.drawMode["shape"] = "xCross";
-    } else if (shape == "box") {
-        document.getElementById("boxIcon").style = "border: 1px, red, solid; background-color: #D3D3D3";
-        sessionMapData.drawMode["shape"] = "box";
-    }
-    sessionMapData.drawMode["drawMode"] = sessionMapData.drawMode["mode"] + sessionMapData.drawMode["shape"];
-    setDrawMode(sessionMapData.drawMode["drawMode"]);
+    // Update internal mode variables
+    sessionMapData.drawMode["lastShape"] = sessionMapData.drawMode["shape"];
+    sessionMapData.drawMode["shape"] = shape;
+    // Clear last mode icon style, update current mode icon style
+    document.getElementById(sessionMapData.drawMode["lastShape"] + "Icon").style = "";
+    document.getElementById(sessionMapData.drawMode["shape"] + "Icon").style = "border: 1px, red, solid; background-color: #D3D3D3";
+    updateDrawMode();
 }
 
 /* DrawMode: Set input tile menu */
-function setInputTile(tileSrc) {
-    document.getElementById("chestIcon").style = "";
-    document.getElementById("goldChestIcon").style = "";
-    document.getElementById("keyIcon").style = "";
-    document.getElementById("heartKeyIcon").style = "";
-    document.getElementById("scrollIcon").style = "";
-    document.getElementById("coinsIcon").style = "";
-    document.getElementById("potionIcon").style = "";
-    document.getElementById("invisibilityIcon").style = "";
-    document.getElementById("appleIcon").style = "";
-    document.getElementById("bananaIcon").style = "";
-    document.getElementById("cherryIcon").style = "";
-    document.getElementById("grapeIcon").style = "";
-    document.getElementById("kiwiIcon").style = "";
-    document.getElementById("lemonIcon").style = "";
-    document.getElementById("limeIcon").style = "";
-    document.getElementById("mangoIcon").style = "";
-    document.getElementById("orangeIcon").style = "";
-    document.getElementById("papayaIcon").style = "";
-    document.getElementById("pearIcon").style = "";
-    document.getElementById("pineappleIcon").style = "";
-    document.getElementById("rambutanIcon").style = "";
-    document.getElementById("soursopIcon").style = "";
-    document.getElementById("starfruitIcon").style = "";
-    document.getElementById("strawberryIcon").style = "";
-    document.getElementById("watermelonIcon").style = "";
-    sessionMapData.drawMode["lastTile"] = tileSrc;
-    if (sessionMapData.drawMode["lastTile"] == "assets/chest.png") {
-        document.getElementById("chestIcon").style = "border: 1px, red, solid; background-color: #D3D3D3";
-    } else if (sessionMapData.drawMode["lastTile"] == "assets/goldChest.png") {
-        document.getElementById("goldChestIcon").style = "border: 1px, red, solid; background-color: #D3D3D3";
-    } else if (sessionMapData.drawMode["lastTile"] == "assets/key.png") {
-        document.getElementById("keyIcon").style = "border: 1px, red, solid; background-color: #D3D3D3";
-    } else if (sessionMapData.drawMode["lastTile"] == "assets/heartKey.png") {
-        document.getElementById("heartKeyIcon").style = "border: 1px, red, solid; background-color: #D3D3D3";
-    } else if (sessionMapData.drawMode["lastTile"] == "assets/scroll.png") {
-        document.getElementById("scrollIcon").style = "border: 1px, red, solid; background-color: #D3D3D3";
-    } else if (sessionMapData.drawMode["lastTile"] == "assets/coins.png") {
-        document.getElementById("coinsIcon").style = "border: 1px, red, solid; background-color: #D3D3D3";
-    } else if (sessionMapData.drawMode["lastTile"] == "assets/potion.png") {
-        document.getElementById("potionIcon").style = "border: 1px, red, solid; background-color: #D3D3D3";
-    } else if (sessionMapData.drawMode["lastTile"] == "assets/invisibility.png") {
-        document.getElementById("invisibilityIcon").style = "border: 1px, red, solid; background-color: #D3D3D3";
-    } else if (sessionMapData.drawMode["lastTile"] == "assets/food/apple.png") {
-        document.getElementById("appleIcon").style = "border: 1px, red, solid; background-color: #D3D3D3";
-    } else if (sessionMapData.drawMode["lastTile"] == "assets/food/banana.png") {
-        document.getElementById("bananaIcon").style = "border: 1px, red, solid; background-color: #D3D3D3";
-    } else if (sessionMapData.drawMode["lastTile"] == "assets/food/cherry.png") {
-        document.getElementById("cherryIcon").style = "border: 1px, red, solid; background-color: #D3D3D3";
-    } else if (sessionMapData.drawMode["lastTile"] == "assets/food/grape.png") {
-        document.getElementById("grapeIcon").style = "border: 1px, red, solid; background-color: #D3D3D3";
-    } else if (sessionMapData.drawMode["lastTile"] == "assets/food/kiwi.png") {
-        document.getElementById("kiwiIcon").style = "border: 1px, red, solid; background-color: #D3D3D3";
-    } else if (sessionMapData.drawMode["lastTile"] == "assets/food/lemon.png") {
-        document.getElementById("lemonIcon").style = "border: 1px, red, solid; background-color: #D3D3D3";
-    } else if (sessionMapData.drawMode["lastTile"] == "assets/food/lime.png") {
-        document.getElementById("limeIcon").style = "border: 1px, red, solid; background-color: #D3D3D3";
-    } else if (sessionMapData.drawMode["lastTile"] == "assets/food/mango.png") {
-        document.getElementById("mangoIcon").style = "border: 1px, red, solid; background-color: #D3D3D3";
-    } else if (sessionMapData.drawMode["lastTile"] == "assets/food/orange.png") {
-        document.getElementById("orangeIcon").style = "border: 1px, red, solid; background-color: #D3D3D3";
-    } else if (sessionMapData.drawMode["lastTile"] == "assets/food/papaya.png") {
-        document.getElementById("papayaIcon").style = "border: 1px, red, solid; background-color: #D3D3D3";
-    } else if (sessionMapData.drawMode["lastTile"] == "assets/food/pear.png") {
-        document.getElementById("pearIcon").style = "border: 1px, red, solid; background-color: #D3D3D3";
-    } else if (sessionMapData.drawMode["lastTile"] == "assets/food/pineapple.png") {
-        document.getElementById("pineappleIcon").style = "border: 1px, red, solid; background-color: #D3D3D3";
-    } else if (sessionMapData.drawMode["lastTile"] == "assets/food/rambutan.png") {
-        document.getElementById("rambutanIcon").style = "border: 1px, red, solid; background-color: #D3D3D3";
-    } else if (sessionMapData.drawMode["lastTile"] == "assets/food/soursop.png") {
-        document.getElementById("soursopIcon").style = "border: 1px, red, solid; background-color: #D3D3D3";
-    } else if (sessionMapData.drawMode["lastTile"] == "assets/food/starfruit.png") {
-        document.getElementById("starfruitIcon").style = "border: 1px, red, solid; background-color: #D3D3D3";
-    } else if (sessionMapData.drawMode["lastTile"] == "assets/food/strawberry.png") {
-        document.getElementById("strawberryIcon").style = "border: 1px, red, solid; background-color: #D3D3D3";
-    } else if (sessionMapData.drawMode["lastTile"] == "assets/food/watermelon.png") {
-        document.getElementById("watermelonIcon").style = "border: 1px, red, solid; background-color: #D3D3D3";
-    }
-    if (sessionMapData.drawMode["inputOn"]) sessionMapData.drawMode["inputTile"] = tileSrc;
-}
-
-/* Helper: DrawMode Rect() Corner */
-function cornerAhover(x, y) {
-    sessionMapData.drawMode["x1"] = x;
-    sessionMapData.drawMode["y1"] = y;
-    setTileSrc(sessionMapData.drawMode["inputTile"], x, y);
-    setDrawMode("hovercbox");
-}
-
-/* Helper: DrawMode Rect() Corner */
-function cornerBhover(x, y) {
-    sessionMapData.drawMode["x2"] = x;
-    sessionMapData.drawMode["y2"] = y;
-    rect();
-    setDrawMode("clickbox");
-}
-
-/* DrawMode: Flip tile function for whole map */
-function flipper() {
-    for (let i = 0; i < sessionMapData.vars["ySize"]; i++) {
-        for (let j = 0; j < sessionMapData.vars["xSize"]; j++) {
-            flipTile(j, i);
-        }
-    }
-    if (document.getElementById("flipIcon").getAttribute("src") == "assets/drawmode/flipA.png") {
-        document.getElementById("flipIcon").src = "assets/drawmode/flipB.png";
-    } else if (document.getElementById("flipIcon").getAttribute("src") == "assets/drawmode/flipB.png") {
-        document.getElementById("flipIcon").src = "assets/drawmode/flipA.png";
-    }
+function setInput(input) {
+    // Update internal mode variables
+    sessionMapData.drawMode["lastInput"] = sessionMapData.drawMode["input"];
+    sessionMapData.drawMode["input"] = input;
+    // Clear last mode icon style, update current mode icon style
+    document.getElementById(sessionMapData.drawMode["lastInput"] + "Icon").style = "";
+    document.getElementById(sessionMapData.drawMode["input"] + "Icon").style = "border: 1px, red, solid; background-color: #D3D3D3";
+    // TODO: Call drawmode function to update
+    updateDrawMode();
 }
 
 /* ############################################################################################################################# */
-/* ####################################################[ DRAWMODE/STYLING ]##################################################### */
+/* #####################################################[ PAINT STYLING ]####################################################### */
 /* ############################################################################################################################# */
 
-/* Paint: Tile Background Color Painter */
+/* [Paint] Tile Background Color Painter */
 function paint(tileID, color) {
     document.getElementById(tileID).style = "background-color: " + color + ";";
 }
 
-/* Paint: Toggle/Set Paint Color */
+/* [Paint] Toggle/Set Paint Color */
 function paintOff() {
     for (let i = 0; i < sessionMapData.vars["ySize"]; i++) {
         for (let j = 0; j < sessionMapData.vars["xSize"]; j++) {
@@ -1174,7 +1117,7 @@ function paintOff() {
     document.getElementById("paint").innerHTML = "Off (" + sessionMapData.drawMode["paintColor"] + ")";
 }
 
-/* Paint: Prompt to Change Paint Color */
+/* [Paint] Prompt to Change Paint Color */
 function paintOn(color) {
     if (color === sessionMapData.drawMode["paintColor"]) {
         document.getElementById("paint").innerHTML = "On (" + sessionMapData.drawMode["paintColor"] + ")";
@@ -1193,8 +1136,68 @@ function paintOn(color) {
     
 }
 
+/* [Paint] Flashes tiles in checkerboard pattern */
+async function flashTiles() {
+    let swaps = 0;
+    for (let k = 0; k < 30; k++) {
+        swaps += 1;
+        for (let i = 0; i < sessionMapData.vars["ySize"]; i++) {
+            for (let j = 0; j < sessionMapData.vars["xSize"]; j++) {
+                if (((i + j + swaps) % 2) != 0) {
+                    document.getElementById(j + "_" + i).style = "background-color: " + sessionMapData.drawMode["flashColor1"];
+                } else {
+                    document.getElementById(j + "_" + i).style = "background-color: " + sessionMapData.drawMode["flashColor2"];
+                }
+            }
+        }
+        await delay(200);
+    }
+    for (let i = 0; i < sessionMapData.vars["ySize"]; i++) {
+        for (let j = 0; j < sessionMapData.vars["xSize"]; j++) {
+            document.getElementById(j + "_" + i).style = "background-color: none";
+        }
+    }
+}
+
 /* ############################################################################################################################# */
 /* ######################################################[ EXPERIMENTAL/FUN ]################################################### */
+/* ############################################################################################################################# */
+
+/* Fun: Monster Scare */
+function boo() {
+    sessionMapData.assets["p1"] = "assets/blackMonster.png";
+    sessionMapData.assets["p2"] = "assets/whiteMonster.png";
+    document.getElementById("score1").style = "background-color: white; color: black;";
+    document.getElementById("score1img").src = sessionMapData.assets["p1"];
+    document.getElementById("score2").style = "background-color: black";
+    document.getElementById("score2img").src = sessionMapData.assets["p2"];
+    if (sessionMapData.players.p1.active == true) {
+        document.getElementById(sessionMapData.players.p1.xPos + '_' + sessionMapData.players.p1.yPos).src = "assets/blackMonster.png";
+    }
+    if (sessionMapData.players.p2.active == true) {
+        document.getElementById(sessionMapData.players.p2.xPos + '_' + sessionMapData.players.p2.yPos).src = "assets/whiteMonster.png";
+    }
+    sessionMapData.vars["MOVE_COOLDOWN_MS"] = 75;
+}
+
+function stopBoo() {
+    sessionMapData.assets["p1"] = "assets/redMonsterDown.png";
+    sessionMapData.assets["p2"] = "assets/blueMonsterDown.png";
+    document.getElementById("score1").style = "background-color: red";
+    document.getElementById("score1img").src = sessionMapData.assets["p1"];
+    document.getElementById("score2").style = "background-color: blue";
+    document.getElementById("score2img").src = sessionMapData.assets["p2"];
+    if (sessionMapData.players.p1.active == true) {
+        document.getElementById(sessionMapData.players.p1.xPos + '_' + sessionMapData.players.p1.yPos).src = "assets/redMonsterDown.png";
+    }
+    if (sessionMapData.players.p2.active == true) {
+        document.getElementById(sessionMapData.players.p2.xPos + '_' + sessionMapData.players.p2.yPos).src = "assets/blueMonsterDown.png";
+    }
+    sessionMapData.vars["MOVE_COOLDOWN_MS"] = 150;
+}
+
+/* ############################################################################################################################# */
+/* ######################################################[ WORK-IN-PROGRESS ]################################################### */
 /* ############################################################################################################################# */
 
 /* Game: 'Wipe Out' Mechanic - Tiles are wiped out? Not sure tbh */
@@ -1233,60 +1236,37 @@ function infect(tileType, amt, x, y) {
     }
 }
 
-/* Fun: Flashing Function */
-async function flashTiles() {
-    let swaps = 0;
-    for (let k = 0; k < 30; k++) {
-        swaps += 1;
-        for (let i = 0; i < sessionMapData.vars["ySize"]; i++) {
-            for (let j = 0; j < sessionMapData.vars["xSize"]; j++) {
-                if (((i + j + swaps) % 2) != 0) {
-                    document.getElementById(j + "_" + i).style = "background-color: " + sessionMapData.drawMode["color1"];
-                } else {
-                    document.getElementById(j + "_" + i).style = "background-color: " + sessionMapData.drawMode["color2"];
-                }
-            }
-        }
-        await delay(200);
-    }
-    for (let i = 0; i < sessionMapData.vars["ySize"]; i++) {
-        for (let j = 0; j < sessionMapData.vars["xSize"]; j++) {
-            document.getElementById(j + "_" + i).style = "background-color: none";
-        }
-    }
+function togglePosHint() {
+    const elements = document.getElementsByClassName("posHint");
+    Array.from(elements).forEach(element => {
+        if (element.style.display === "block") 
+            element.style.display = "none";
+        else 
+            element.style.display = "block";
+    });
 }
 
-/* Fun: Monster Scare */
-function boo() {
-    sessionMapData.assets["p1"] = "assets/blackMonster.png";
-    sessionMapData.assets["p2"] = "assets/whiteMonster.png";
-    document.getElementById("score1").style = "background-color: white; color: black;";
-    document.getElementById("score1img").src = sessionMapData.assets["p1"];
-    document.getElementById("score2").style = "background-color: black";
-    document.getElementById("score2img").src = sessionMapData.assets["p2"];
-    if (sessionMapData.players.p1.active == true) {
-        document.getElementById(sessionMapData.players.p1.xPos + '_' + sessionMapData.players.p1.yPos).src = "assets/blackMonster.png";
-    }
-    if (sessionMapData.players.p2.active == true) {
-        document.getElementById(sessionMapData.players.p2.xPos + '_' + sessionMapData.players.p2.yPos).src = "assets/whiteMonster.png";
-    }
-    sessionMapData.vars["MOVE_COOLDOWN_MS"] = 75;
+/* Helper: Returns output Array of 8 tileIDs surrounding input tileID */
+function circleAround(tileID) {
+    let circleTileIDs = [];
+    circleTileIDs.push((parseInt(tileID.split("_")[0]) - 1) + "_" + (parseInt(tileID.split("_")[1]) - 1));
+    circleTileIDs.push((parseInt(tileID.split("_")[0]) - 1) + "_" + parseInt(tileID.split("_")[1]));
+    circleTileIDs.push((parseInt(tileID.split("_")[0]) - 1) + "_" + (parseInt(tileID.split("_")[1]) + 1));
+    circleTileIDs.push(parseInt(tileID.split("_")[0]) + "_" + (parseInt(tileID.split("_")[1]) + 1));
+    circleTileIDs.push((parseInt(tileID.split("_")[0]) + 1) + "_" + (parseInt(tileID.split("_")[1]) + 1));
+    circleTileIDs.push((parseInt(tileID.split("_")[0]) + 1) + "_" + parseInt(tileID.split("_")[1]));
+    circleTileIDs.push((parseInt(tileID.split("_")[0]) + 1) + "_" + (parseInt(tileID.split("_")[1]) - 1));
+    circleTileIDs.push(parseInt(tileID.split("_")[0]) + "_" + (parseInt(tileID.split("_")[1]) - 1));
+    return circleTileIDs;
 }
 
-function stopBoo() {
-    sessionMapData.assets["p1"] = "assets/redMonsterDown.png";
-    sessionMapData.assets["p2"] = "assets/blueMonsterDown.png";
-    document.getElementById("score1").style = "background-color: red";
-    document.getElementById("score1img").src = sessionMapData.assets["p1"];
-    document.getElementById("score2").style = "background-color: blue";
-    document.getElementById("score2img").src = sessionMapData.assets["p2"];
-    if (sessionMapData.players.p1.active == true) {
-        document.getElementById(sessionMapData.players.p1.xPos + '_' + sessionMapData.players.p1.yPos).src = "assets/redMonsterDown.png";
+/* Generates preview circle around tile */
+function placePreview(tileID) {
+    let tileArray = circleAround(tileID);
+    for (let i = 0; i < tileArray.length; i++) {
+        let circleID = tileArray[i];
+        document.getElementById(circleID).style.backgroundColor = "rgba(255, 0, 0, 0.5)";
     }
-    if (sessionMapData.players.p2.active == true) {
-        document.getElementById(sessionMapData.players.p2.xPos + '_' + sessionMapData.players.p2.yPos).src = "assets/blueMonsterDown.png";
-    }
-    sessionMapData.vars["MOVE_COOLDOWN_MS"] = 150;
 }
 
 /* ############################################################################################################################# */
@@ -1314,58 +1294,6 @@ function resetVars() {
     document.getElementById("result2").innerHTML = sessionMapData.vars["result2"];
 }
 
-/* DevTools: Testing Tools */
-function devTools() {
-    // If Empty, Initialize
-    if (document.getElementById("devTools").innerHTML == "") {
-        document.getElementById("title").innerHTML = "Monster Tiles Sandbox (" + session_id + ")";
-        document.getElementById("devTools").innerHTML = '<div><button onclick="timer()">Time</button><br><div id="devClock" class="center"></div></div>';
-        devClock(300);
-    } else if (document.getElementById("devTools").getAttribute("style") == "display: none;"){ // If Hidden, Show
-        document.getElementById("title").innerHTML = "Monster Tiles Sandbox (" + session_id + ")";
-        document.getElementById("devTools").style = "display: flex;";
-    } else { // If Not Empty or Hidden, Hide;
-        document.getElementById("title").innerHTML = "Monster Tiles Sandbox";
-        document.getElementById("devTools").style = "display: none;";
-    }
-}
-
-/* DevTools: Variable Clock for Debugging */
-async function devClock(amt) {
-    if (document.getElementById("devClock").innerHTML == "") {
-        let clock = amt || prompt("How much time do you need (in seconds)?") || 600;
-        clock *= 10;
-        document.getElementById("devClock").innerHTML = '<div style="border: 1px, solid, black; width: 12vw;"><p>x-Size: <span id="xSize"></span> | y-Size: <span id="ySize"></span></p><p>x-Pos: <span id="xPos"></span> | y-Pos: <span id="yPos"></span></p><p>x2-Pos: <span id="x2Pos"></span> | y2-Pos: <span id="y2Pos"></span></p><p>rand-X: <span id="randX"></span> | rand-Y: <span id="randY"></span></p><p>playerCount: <span id="playerCount"></span> | openTiles: <span id="openTiles"></span></p><p>gameClock: <span id="gameClock"></span> </p><p>active: <span id="active"></span> | active1: <span id="active1"></span> | active2: <span id="active2"></span> | Clock: <span id="clock"></span></p><p>drawMode: <span id="drawMode"></span></p></div>';
-        for (let i = 0; i < clock; i++) {
-            document.getElementById("xSize").innerHTML = sessionMapData.vars["xSize"];
-            document.getElementById("ySize").innerHTML = sessionMapData.vars["ySize"];
-            document.getElementById("xPos").innerHTML = sessionMapData.players["p1"].xPos;
-            document.getElementById("yPos").innerHTML = sessionMapData.players["p1"].yPos;
-            document.getElementById("x2Pos").innerHTML = sessionMapData.players["p2"].xPos;
-            document.getElementById("y2Pos").innerHTML = sessionMapData.players["p2"].yPos;
-            document.getElementById("randX").innerHTML = sessionMapData.vars["randX"];
-            document.getElementById("randY").innerHTML = sessionMapData.vars["randY"];
-            document.getElementById("playerCount").innerHTML = sessionMapData.vars["playerCount"];
-            document.getElementById("result1").innerHTML = sessionMapData.vars["result1"];
-            document.getElementById("result2").innerHTML = sessionMapData.vars["result2"];
-            document.getElementById("openTiles").innerHTML = sessionMapData.vars["openTiles"];
-            document.getElementById("active").innerHTML = sessionMapData.players["bot"].active;
-            document.getElementById("active1").innerHTML = sessionMapData.players["p1"].active;
-            document.getElementById("active2").innerHTML = sessionMapData.players["p2"].active;
-            document.getElementById("gameClock").innerHTML = sessionMapData.vars["gameClock"] / 10;
-            document.getElementById("clock").innerHTML = i / 10;
-            document.getElementById("drawMode").innerHTML = sessionMapData.drawMode["drawMode"];
-            await delay(100);
-        }
-        await delay(500);
-        document.getElementById("devClock").innerHTML = "<p onclick='devClock()'>Dev Clock Timer Up!</p>";
-        await delay(1000);
-        document.getElementById("devClock").innerHTML = "";
-    } else {
-        document.getElementById("devClock").innerHTML == "";
-    }
-}
-
 /* ############################################################################################################################# */
 /* ########################################################[ LISTENERS ]######################################################## */
 /* ############################################################################################################################# */
@@ -1381,6 +1309,9 @@ document.addEventListener('keydown', (move) => {
     // Both-Player Can Use Keys
     if (move.key === 'f') {
         flashTiles();
+    }
+    if (move.key === 'F3') {
+        togglePosHint();
     }
     // Player 1 Keys
     if (move.key === ' ') {
@@ -1473,7 +1404,7 @@ function update(timestamp) {
             if (sessionMapData.players["p1"].active && !(new1.x === old1.x && new1.y === old1.y)) {
                 const oldID1 = old1.x + "_" + old1.y;
                 const newID1 = new1.x + "_" + new1.y; 
-                if (swapIfTile(oldID1, newID1)) {
+                if (moveTile(oldID1, newID1)) {
                     sessionMapData.players["p1"].xPos = new1.x;
                     sessionMapData.players["p1"].yPos = new1.y;
                 }
@@ -1482,7 +1413,7 @@ function update(timestamp) {
             if (sessionMapData.players["p2"].active && !(new2.x === old2.x && new2.y === old2.y)) {
                 const oldID2 = old2.x + "_" + old2.y;
                 const newID2 = new2.x + "_" + new2.y;
-                if (swapIfTile(oldID2, newID2)) {
+                if (moveTile(oldID2, newID2)) {
                     sessionMapData.players["p2"].xPos = new2.x;
                     sessionMapData.players["p2"].yPos = new2.y;
                 }

@@ -1,40 +1,54 @@
 ################################################################################################################################
-######################################################### DESCRIPTION ##########################################################
+################################################## Monster Tiles Sandbox v0.1 ##################################################
 ################################################################################################################################
 
-Name: Monster Tiles Sandbox
-Description: Offline 2D Survival Game, potential for multiplayer?
-Inspiration: Minecraft/Terraria/Stardew-like? Classic games snake, tron
+[Quick Description] Offline 2D Survival Game, potential for multiplayer?
+[Inspiration] Minecraft/Terraria/Stardew-like? Classic games snake, tron
 
-Current Gamemode:
-################################################################################################################################
-#################################################### v0.1 Release Features #####################################################
-################################################################################################################################
+[Base Game] Face off as either the Red Monster or the Blue Monster to eat the most food before the timer ends!
+- Randomly Generated Map
+- Player versus Player (PvP) Gamemode - Offline Multiplayer Currently, Online Multiplayer Planned for Future Release
+- Timer currently at 30 seconds.
 
-[Local Multiplayer Controls] 
-- Player 1 use WASD keys; Player 2 use Arrow keys
-- Pick up items added from drawmode in 16-slot inventory
-
-[PvP Gamemode] 
-- Two monsters navigate through blocks to eat the most randomly spawned food in 30 seconds
-
-*[Drawmode - Sandbox Tools]
-- Edit the map with pen, eraser, input, and flip-flop tools.
-- Brush sizes small, medium, large; horizontal/vertical/diagonal lines, cross, x, and square shapes.
-- Select input tile to add custom tiles including monsters, food, and more
+[Sandbox Mode] Use Sandbox Mode to play god in the game. Use drawing tools to build the map the monsters face off in, spawn food, 
+paint, add players, and more!
+- [Drawmode] Edit the map with pen, eraser, input, and flip-flop tools.
+    - Brush sizes small, medium, large; horizontal/vertical/diagonal lines; + Cross and x Cross shapes
+    - Select input tile to add custom tiles including monsters, food, and items
 - Spawn, add, and clear food
-- Customizable map dimensions on startup
+- Customize map dimensions on startup
+- Design and save game to JSON or local session
 
-*[Developer Mode]
-- *Command interface: ustomizing with fields
-- *GUI with Sandbox Buttons and Editor Mechanics (Select Tile, Saved Tile)
+[Developer Mode]
+- Debug Menu, Press F3 for position helper tool
 
-*[Design/Save Maps]
-- JSON File Game Tile Map
-- Save and fill with space tiles if out of bounds 
-- Separate Map Data Object for customized maps with tiles?
-- Better tile management? --> Create finite tileTypes with certain functions
-- Json Receiviver function to find key value pairs
+[Planned]
+- Better tiles
+    - Create finite tileTypes with certain functions
+    - Adding different point values or effects for food types
+    - Color Selector
+    - Tile Naming Conventions
+- Map/saving error handling
+    - Map frames for larger map, how to "push" a new column of frames to make bigger map
+    - Pasting different sized boards
+- Developer interface: 
+    - Customizing with fields in command-line interface
+    - GUI with Sandbox Buttons and Better Editor Mechanics Organization
+- Items and inventory crafting recipes with Chest/GUI interface area
+    - Idea of 'item drops' overlay, for opened chests
+    - Add mystical items like Catholic Church relics. Inspo: Alleged Jesus-face in shroud relic
+- Dynamic additions for future expansions
+    - Easy to add custom tile types
+- User settings/customization page for assets, speed, etc.
+- Clear user classes/modes
+    - Developer Mode, Multiplayer PvP, Singleplayer Adventure
+    - Bot Base Game (JSON File, Visited by ID?)
+- PageModule/Menu Styling (per page)
+    - Settings menu/page
+- New game mechanics
+    - "Shooting" (Snake)
+    - "Territory" (Snake/Tron)
+    - High Score/Scoreboard (All)
 
 *: work-in-progress feature
 
@@ -47,24 +61,59 @@ Current Gamemode:
 - checkIfNear(tileType, distance?) - Checks if near certain tile to interact with, potential to check distance away
     - Builds into different interactions unlocking by distance
 ################################################################################################################################
+######################################################## CODE HIERARCHY ########################################################
 ################################################################################################################################
-################################################################################################################################
-
-[Planned Features]
-- Adding Chest/Interface GUI Area
-- Adding different point values or effects for food types
-- Idea of 'item drops' overlay, for broken chests
-- Outline User Classes/Modes (Developer Mode, Multiplayer PvP, Singleplayer Adventure)
-    - Bot (JSON File, Visited by ID?)
-- Page Styling (per page)
-- Color Selector
-- Tile Naming Conventions
-- "Shooting" (Snake)
-- "Territory" (Snake/Tron)
-- High Score/Scoreboard (All)
-- Bot (Base Game)
-- Add mystical items like Catholic Church relics. Inspo: Alleged Jesus-face in shroud relic
-
 [Refactoring Notes]
 - Use D.R.Y. (Don't Repeat Yourself) // FUNCTION CHECK CTRL+F EVERY FUNCTION TO SEE IF ITS USED FOR GAME
 - !COMMAND ZONE for dev mode and game/story mode
+
+*** Refactor Player/Movement Logic, MoveTile should update player position and swaptilesrc helper shouldn't be used
+
+1. Game Variables --> Held in 'sessionMapData' object for 1-object save-game.
+    - Variables: Unchangeable and absolute (private), includes all in 'vars' object.
+        - Toggles: Used to distinguish modes as a toggled switch.
+        - States: Used to distinguish modes with more than 2 options
+    - Options: Change assets, texture packs, etc. for customization
+        - Controls: To be added in the future
+
+2. Save Logic
+    - Save/Load Game to/from LocalStorage and JSON files 
+    - Map/Frame saving
+
+3. Main Game Logic
+    - Main Load/Bootup: Makes the modules and GUI for the game.
+        - Making the board
+    - Win conditions
+    - Game Start
+    - Test Runner
+
+3. Player Logic
+    - Create Players/Bots
+
+4. Movement Logic 
+    - Valid Moves, Entities, Food Points
+
+5. Inventory Logic
+    - Counts, Types, Updates
+
+6. Map Generation Logic
+    - Setting Tile
+    - Random Generation
+
+7. Drawmode Logic
+
+
+4. Module Makers --> Used to modularize Menus and Panes through JS and Sections for GUI
+    - Title
+    - Alert Box
+    - Main Panel >> (3 Columns)
+        - Player 1 Menu
+        - Board
+        - Player 2 Menu
+    - Developer Mode Toolbox
+    - Paint Color Picker
+    - Load/Save Menu
+    - Start Button
+    - DevTools Debugging Button
+
+6. LISTENERS
