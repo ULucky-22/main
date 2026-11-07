@@ -141,9 +141,6 @@ var sessionMapData = {
             "shape":"dot", 
             "input":"chest",
         },
-        "drawMode":"clickinputdot", //
-        "inputTile":"assets/blank.png", //
-        "lastTile":"assets/blank.png",  //
         "inputOn":false, // use in tool 
         "boxOn":false, 
         "bucketOn":false, 
@@ -1014,10 +1011,6 @@ function flipTile(x, y) {
     }
 }
 
-/* ############################################################################################################################# */
-/* ####################################################[ DRAWMODE/STYLING ]##################################################### */
-/* ############################################################################################################################# */
-
 /* DrawMode: Sets all 4 settings at once (tool, mode, shape, input) */
 function setDrawMode() {
     setTool(sessionMapData.drawMode.current["tool"]);
@@ -1241,8 +1234,6 @@ function stopBoo() {
     }
     sessionMapData.vars["MOVE_COOLDOWN_MS"] = 150;
 }
-
-
 
 /* ############################################################################################################################# */
 /* ######################################################[ WORK-IN-PROGRESS ]################################################### */

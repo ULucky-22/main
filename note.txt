@@ -5,25 +5,59 @@
 [Quick Description] Offline 2D Survival Game, potential for multiplayer?
 [Inspiration] Minecraft/Terraria/Stardew-like? Classic games snake, tron
 
-[Base Game] Face off as either the Red Monster or the Blue Monster to eat the most food before the timer ends!
+[Adventure Mode]
+- In the works!
+
+[PvP Mode] 
+- Current Base Game Mode
+- Face off as either the Red Monster or the Blue Monster to eat the most food before the timer ends!
 - Randomly Generated Map
 - Player versus Player (PvP) Gamemode - Offline Multiplayer Currently, Online Multiplayer Planned for Future Release
 - Timer currently at 30 seconds.
 
-[Sandbox Mode] Use Sandbox Mode to play god in the game. Use drawing tools to build the map the monsters face off in, spawn food, 
-paint, add players, and more!
-- [Drawmode] Edit the map with pen, eraser, input, and flip-flop tools.
-    - Brush sizes small, medium, large; horizontal/vertical/diagonal lines; + Cross and x Cross shapes
+[Sandbox Mode] 
+- Use Sandbox Mode to create your own game. 
+- Use drawing tools to build the map, spawn food, add items, paint, players, and more!
+    - Edit the map with pen, eraser, input, and flip-flop tools.
+    - Brush sizes small, medium, large; box; horizontal/vertical/diagonal lines; + Cross and x Cross shapes
     - Select input tile to add custom tiles including monsters, food, and items
-- Spawn, add, and clear food
 - Customize map dimensions on startup
-- Design and save game to JSON or local session
+- Design and save game to JSON file or local session
 
 [Developer Mode]
 - New! Press F3 to view the Debug Menu
 - New! Press F2 to view the Position Coordinates Helper
 
 [Planned]
+- Developer interface: 
+    - Customizing with fields in command-line interface
+    - GUI with Sandbox Buttons and Better Editor Mechanics Organization
+- Items and inventory crafting recipes with Chest/GUI interface area
+    - Idea of 'item drops' overlay, for opened chests
+    - Mystical adventure items like Catholic Church relics. Inspo: Alleged Jesus-face in shroud relic
+- User settings/customization page for assets, speed, etc.
+- Adventure Game Mode
+    - Face off in maps against bots!
+
+################################################################################################################################
+########################################################## CHANGELOG ###########################################################
+################################################################################################################################
+Monster Tiles Sandbox v0.1 build 11-07-2026
+- Fixed box shape not working
+- Cleaned up debug menu and assigned F3 key to toggle
+- "Boo" potion speed effect added when item interacted with
+- Announcer messages reworking
+- Fixed issue where loading/saving did not update selection background color correctly
+- Changed inventory item count to only appear when 2+ items present
+
+To Do Priority
+- Indicate when monsters are on the board on input menu by crossing them out
+- Input tiles should take the spot of inputIcon when in use, and cancelIcon should remove it for clarity with inputs
+- Map saving from JSON files to create moving maps/multiple levels
+- Distinct buttons to enter sandbox/editing mode vs. normal game mode
+- Create bot for singleplayer games
+
+To Do Eventually
 - Better tiles
     - Create finite tileTypes with certain functions
     - Adding different point values or effects for food types
@@ -32,15 +66,8 @@ paint, add players, and more!
 - Map/saving error handling
     - Map frames for larger map, how to "push" a new column of frames to make bigger map
     - Pasting different sized boards
-- Developer interface: 
-    - Customizing with fields in command-line interface
-    - GUI with Sandbox Buttons and Better Editor Mechanics Organization
-- Items and inventory crafting recipes with Chest/GUI interface area
-    - Idea of 'item drops' overlay, for opened chests
-    - Add mystical items like Catholic Church relics. Inspo: Alleged Jesus-face in shroud relic
 - Dynamic additions for future expansions
     - Easy to add custom tile types
-- User settings/customization page for assets, speed, etc.
 - Clear user classes/modes
     - Developer Mode, Multiplayer PvP, Singleplayer Adventure
     - Bot Base Game (JSON File, Visited by ID?)
@@ -50,8 +77,6 @@ paint, add players, and more!
     - "Shooting" (Snake)
     - "Territory" (Snake/Tron)
     - High Score/Scoreboard (All)
-
-*: work-in-progress feature
 
 ################################################################################################################################
 ########################################################### NOTEPAD ############################################################
@@ -70,41 +95,73 @@ paint, add players, and more!
 
 *** Refactor Player/Movement Logic, MoveTile should update player position and swaptilesrc helper shouldn't be used
 
-1. Game Variables --> Held in 'sessionMapData' object for 1-object save-game.
+1. Game Variables
+    - Held in 'sessionMapData' object for 1-object save-game.
     - Variables: Unchangeable and absolute (private), includes all in 'vars' object.
         - Toggles: Used to distinguish modes as a toggled switch.
         - States: Used to distinguish modes with more than 2 options
-    - Options: Change assets, texture packs, etc. for customization
+    - Players: Used to store player data
+    - Assets: To define all assets used in game, for future use for theme packs, etc.
+    - Drawmode: Settings/variables for drawmode
+    - Tiles: Space to store tiles during save-games
+    - (Planned) Options: Change assets, texture packs, etc. for customization
         - Controls: To be added in the future
 
-2. Save Logic
+2. Saving Logic
     - Save/Load Game to/from LocalStorage and JSON files 
     - Map/Frame saving
 
 3. Main Game Logic
-    - Main Load/Bootup: Makes the modules and GUI for the game.
-        - Making the board
+    - Main Load/Bootup
     - Win conditions
     - Game Start
     - Test Runner
 
-3. Player Logic
-    - Create Players/Bots
+4. Module Initialization
+    - Board Makers
+    - Sandbox menu
+    - Debug Menu
 
-4. Movement Logic 
-    - Valid Moves, Entities, Food Points
+5. Player Logic
+    - Create Players, where to place them
+    - Bots, future spot for bot behavior
 
-5. Inventory Logic
-    - Counts, Types, Updates
+6. Movement Logic 
+    - Valid Tile Moves, 
+    - Interactions with Entities and Food
 
-6. Map Generation Logic
+7. Inventory Logic
+    - Counts, Items, Players
+
+8. Placement/Type Checkers
+    - Ensures valid moves are made
+
+9. Map Generation Logic
     - Setting Tile
     - Random Generation
+    - Food
 
-7. Drawmode Logic
+10. Drawmode Logic
+    - Shapes, Modes, Tools, Inputs and Core functions
 
+11. Paint Styling
+    - Paint Toggler + Color selection
+    - Fun Flashing Tiles
 
-4. Module Makers --> Used to modularize Menus and Panes through JS and Sections for GUI
+12. Experimental/Fun
+    - Fun experimental stuff to add a bit of whimsy :)
+
+13. Work-in-Progress
+    - Storage area for things that get boring
+
+14. Development/Global Helpers
+    - Unsorted, useful for all
+
+15. Listeners
+    - Input functionality of game
+
+Modules to Make List 
+--> Used to modularize Menus and Panes through JS and Sections for GUI/map traversal
     - Title
     - Alert Box
     - Main Panel >> (3 Columns)
@@ -116,5 +173,3 @@ paint, add players, and more!
     - Load/Save Menu
     - Start Button
     - DevTools Debugging Button
-
-6. LISTENERS
