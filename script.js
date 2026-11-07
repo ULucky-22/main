@@ -14,6 +14,7 @@ var sessionMapData = {
         "result1":0, // Private: Player 1 Score
         "result2":0, // Private: Player 2 Score
         "gameClock":0, // Private: Game Clock
+        "debugMenuOn":false, // Private: Toggle for debug menu
         "timestamp":0, // Private: Used for save timestamp
         "randX":0, // Private: Used for random tile generation
         "randY":0 // Private: Used for random tile generation
@@ -121,25 +122,30 @@ var sessionMapData = {
             "assets/scroll.png", 
             "assets/coins.png", 
             "assets/potion.png", 
-            "assets/invisibility.png"
+            "assets/invisibility.png",
+            "assets/cancel.png"
         ]},
     drawMode: {
         "paintColor":"none", 
         "flashColor1":"none", 
         "flashColor2":"red", 
-        "tool":"draw",
-        "mode":"click", 
-        "shape":"dot", 
-        "input":"apple",
-        "lastTool":"draw",
-        "lastMode":"click",
-        "lastShape":"dot",
-        "lastInput":"apple",
+        "current":{
+            "tool":"draw",
+            "mode":"click", 
+            "shape":"dot", 
+            "input":"chest",
+        },
+        "last":{
+            "tool":"draw",
+            "mode":"click", 
+            "shape":"dot", 
+            "input":"chest",
+        },
         "drawMode":"clickinputdot", //
         "inputTile":"assets/blank.png", //
         "lastTile":"assets/blank.png",  //
         "inputOn":false, // use in tool 
-        "boxOn":true, 
+        "boxOn":false, 
         "bucketOn":false, 
         "x1":0, 
         "y1":0, 
@@ -164,7 +170,7 @@ function saveGame() {
         const string = JSON.stringify(sessionMapData);
         localStorage.setItem("save", string);
         // Alert user that the game has been saved
-        document.getElementById("alert").innerHTML = "Game Saved!";
+        announcer("Game saved locally!");
     } catch (e) {
         console.warn("Failed to save board:", e);
     }
@@ -173,6 +179,7 @@ function saveGame() {
 /* [Saving] Loads game and map from LocalStorage */
 function loadGame() {
     try {
+        let currentSettings = sessionMapData.drawMode.current;
         const string = localStorage.getItem("save");
         const load = JSON.parse(string);
         sessionMapData.vars = load.vars || {};
@@ -180,10 +187,12 @@ function loadGame() {
         sessionMapData.assets = load.assets || {};
         sessionMapData.drawMode = load.drawMode || {};
         sessionMapData.tiles = load.tiles || {};
-        boardLoad();
+        sessionMapData.drawMode.last = currentSettings;
+        boardLoad(sessionMapData.tiles);
+        setDrawMode();
         requestAnimationFrame(update);
         // Alert user that the game has been loaded
-        document.getElementById("alert").innerHTML = "Game Loaded!";
+        announcer("Game loaded locally!");
     } catch (e) {
         console.warn("Failed to load board:", e);
         return null;
@@ -192,46 +201,54 @@ function loadGame() {
 
 /* [Saving] Saves game and map to JSON file */
 async function saveToFile(sessionMapData) {
-  try {
-    // Open browser 'Save As' dialog
-    const handle = await window.showSaveFilePicker({
-      suggestedName: 'test.json',
-      types: [{
-        description: 'JSON Files',
-        accept: { 'application/json': ['.json'] },
-      }],
-    });
+    try {
+        // Saves current board state to sessionMapData.tiles; resets last drawmode flags
+        boardSave();
+        // Open browser 'Save As' dialog
+        const handle = await window.showSaveFilePicker({
+        suggestedName: 'test.json',
+        types: [{
+            description: 'JSON Files',
+            accept: { 'application/json': ['.json'] },
+        }],
+        });
 
-    // Create writable stream and write the stringified object
-    const writable = await handle.createWritable();
-    await writable.write(JSON.stringify(sessionMapData, null, 2));
-    await writable.close();
-    
-    console.log("File saved successfully!");
-  } catch (err) {
-    console.error("Save cancelled or failed:", err);
-  }
+        // Create writable stream and write the stringified object
+        const writable = await handle.createWritable();
+        await writable.write(JSON.stringify(sessionMapData, null, 2));
+        await writable.close();
+        announcer("Game saved to file!");
+        console.log("File saved successfully!");
+    } catch (err) {
+        console.error("Save cancelled or failed:", err);
+    }
 }
 
 /* [Saving] Loads game and map from JSON file */
 async function loadFromFile() {
-  try {
-    // Open browser native 'Open File' dialog
-    const [handle] = await window.showOpenFilePicker({
-      types: [{
-        description: 'JSON Files',
-        accept: { 'application/json': ['.json'] },
-      }],
-    });
-    // Get file contents and read as text
-    const file = await handle.getFile();
-    const text = await file.text();
-    // Parse back into a JS Object, load board
-    sessionMapData = JSON.parse(text);
-    boardLoad();
-  } catch (err) {
-    console.error("Load cancelled or failed:", err);
-  }
+    try {
+        let currentSettings = sessionMapData.drawMode.current;
+        // Open browser native 'Open File' dialog
+        const [handle] = await window.showOpenFilePicker({
+        types: [{
+            description: 'JSON Files',
+            accept: { 'application/json': ['.json'] },
+        }],
+        });
+        // Get file contents and read as text
+        const file = await handle.getFile();
+        const text = await file.text();
+        // Parse back into a JS Object, load board
+        sessionMapData = JSON.parse(text);
+        sessionMapData.drawMode.last = currentSettings;
+        boardLoad(sessionMapData.tiles);
+        setDrawMode();
+        requestAnimationFrame(update);
+        announcer("Game loaded from file!");
+        console.log("File loaded successfully!");
+    } catch (err) {
+        console.error("Load cancelled or failed:", err);
+    }
 }
 
 /* [Saving] Saves board src and background to sessionMapData[tiles] object */
@@ -249,8 +266,8 @@ function boardSave() {
 }
 
 /* [Saving] Loads board src and background from sessionMapData[tiles] object */
-function boardLoad() {
-    for (const [tileID, attribute] of Object.entries(sessionMapData.tiles)) {
+function boardLoad(map) {
+    for (const [tileID, attribute] of Object.entries(map)) {
         if (!document.getElementById(tileID)) 
             continue;
         if (attribute.src !== undefined) 
@@ -289,15 +306,14 @@ async function timer(time) {
         }
     }
     sessionMapData.vars["gameClock"] = time * 10;
-    document.getElementById("alert").style = "color: black;";
-    document.getElementById("alert").innerHTML = "Time Remaining: " + sessionMapData.vars["gameClock"] / 10;
+    document.getElementById("announcer").innerHTML = "Time Remaining: " + sessionMapData.vars["gameClock"] / 10;
     while (sessionMapData.vars["gameClock"] > 0) {
         await delay(100);
         sessionMapData.vars["gameClock"] -= 1;
-        document.getElementById("alert").innerHTML = "Time Remaining: " + sessionMapData.vars["gameClock"] / 10;
+        document.getElementById("announcer").innerHTML = "Time Remaining: " + sessionMapData.vars["gameClock"] / 10;
     }
     await delay(1000);
-    document.getElementById("alert").innerHTML = "Time is up!";
+    document.getElementById("announcer").innerHTML = "Time is up!";
     sessionMapData.players["p1"].active = false;
     sessionMapData.players["p2"].active = false;
     let endMessage;
@@ -312,10 +328,10 @@ async function timer(time) {
         winner = sessionMapData.assets["p2"];
     }
     await delay(1000);
-    document.getElementById("alert").innerHTML = endMessage;
+    document.getElementById("announcer").innerHTML = endMessage;
     await delay(5000);
-    document.getElementById("alert").innerHTML = ".";
-    document.getElementById("alert").style = "color: white;";
+    document.getElementById("announcer").innerHTML = ".";
+    document.getElementById("announcer").style = "color: white;";
     document.getElementById("start").style = "display: block;";
     document.getElementById("start").innerHTML = "<button onclick='start()'>Play Again?</button>";
 }
@@ -337,9 +353,8 @@ async function start() {
 
 /* [Main] Test code execution */
 function runTest() {
-    document.getElementById("alert").innerHTML = "Test Code Running!";
+    announcer("Test Code Running!");
 
-    generateRandomMap();
 }
 
 /* ############################################################################################################################# */
@@ -368,60 +383,39 @@ function initializeBoard(xInput, yInput) {
 
 /* [Module] Initializes sandbox menu */
 function initializeSandboxMenu() {
-    document.getElementById("toolbox").innerHTML = '<div><button onclick="spawnFood()">Spawn Food</button><button onclick="addTile(' + "'food'" + ')">Add Food</button><button onclick="clearFood()">Clear Food</button><button onclick="fillBoard()">Clear Board</button></div>'
+    document.getElementById("toolbox").innerHTML = '<div><button onclick="timer()">Time</button><button onclick="spawnFood()">Spawn Food</button><button onclick="addTile(' + "'food'" + ')">Add Food</button><button onclick="clearFood()">Clear Food</button><button onclick="fillBoard()">Clear Board</button></div>'
 }
 
 /* [Module] Initializes debug menu for testing */
-function toggleDebugMenu() {
-    // If empty, initialize
-    if (document.getElementById("debugMenu").innerHTML == "") {
-        document.getElementById("title").innerHTML = "Monster Tiles Sandbox (" + session_id + ")";
-        document.getElementById("debugMenu").innerHTML = '<div><button onclick="timer()">Time</button><button onclick="togglePosHint()">Show Positions</button><br><div id="devClock"></div></div>';
-        devClock(300);
-    // If hidden, show
-    } else if (document.getElementById("debugMenu").getAttribute("style") == "display: none;"){ // If Hidden, Show
-        document.getElementById("title").innerHTML = "Monster Tiles Sandbox (" + session_id + ")";
-        document.getElementById("debugMenu").style = "display: flex;";
-    // If not hidden, hide;
+async function toggleDebugMenu() {
+    if (sessionMapData.vars["debugMenuOn"] === false) {
+        document.getElementById("debugMenu").innerHTML = '<div><p><b><u>Debug Menu Opened Clock:</b>&nbsp; <span id="clock"></span></u></p><p><b>Map:</b>&nbsp; <span id="xSize"></span> &#10761; <span id="ySize"></span> &nbsp;|&nbsp; <b>Game Clock:</b>&nbsp; <span id="gameClock"></span></p><p><b>Open Tiles:</b>&nbsp; <span id="openTiles"></span> &nbsp;|&nbsp; <b>Players:</b>&nbsp; <span id="playerCount"></span></p><br><p><b>Player 1 (XY):</b>&nbsp; <span id="activeP1"></span>&nbsp; (<span id="xPosP1"></span>,<span id="yPosP1"></span>)</p><p><b>Player 2 (XY):</b>&nbsp; <span id="activeP2"></span>&nbsp; (<span id="xPosP2"></span>,<span id="yPosP2"></span>)</p><p><b>Bot:</b>&nbsp; <span id="activeBot"></span></p><p><b>Random (XY):</b>&nbsp; (<span id="randX"></span>, <span id="randY"></span>)</p><br><p><b>Draw Mode:</b>&nbsp; <span id="drawMode"></span></p><br><p>F2 - Toggle Position Coordinates</p><p>F3 - Toggle Debug Menu</p></div>';
+        sessionMapData.vars["debugMenuOn"] = true;
+        document.getElementById("debugMenu").style.display = "block";        
     } else {
-        document.getElementById("title").innerHTML = "Monster Tiles Sandbox";
-        document.getElementById("debugMenu").style = "display: none;";
+        document.getElementById("debugMenu").style.display = "none";
+        sessionMapData.vars["debugMenuOn"] = false;
     }
-}
-
-/* [Module] Variable Clock for Debugging */
-async function devClock(amt) {
-    if (document.getElementById("devClock").innerHTML == "") {
-        let clock = amt || prompt("How much time do you need (in seconds)?") || 600;
-        clock *= 10;
-        document.getElementById("devClock").innerHTML = '<div style="width: 12vw;"><p>Map: <span id="xSize"></span> &#10761; <span id="ySize"></span> | XY-P1: (<span id="xPos"></span>,<span id="yPos"></span>) | XY-P2: (<span id="x2Pos"></span>,<span id="y2Pos"></span>)</p><p>rand-X: <span id="randX"></span> | rand-Y: <span id="randY"></span></p><p>playerCount: <span id="playerCount"></span> | openTiles: <span id="openTiles"></span></p><p>gameClock: <span id="gameClock"></span> </p><p>active: <span id="active"></span> | active1: <span id="active1"></span> | active2: <span id="active2"></span> | Clock: <span id="clock"></span></p><p>drawMode: <span id="drawMode"></span></p></div>';
-        for (let i = 0; i < clock; i++) {
-            document.getElementById("xSize").innerHTML = sessionMapData.vars["xSize"];
-            document.getElementById("ySize").innerHTML = sessionMapData.vars["ySize"];
-            document.getElementById("xPos").innerHTML = sessionMapData.players["p1"].xPos;
-            document.getElementById("yPos").innerHTML = sessionMapData.players["p1"].yPos;
-            document.getElementById("x2Pos").innerHTML = sessionMapData.players["p2"].xPos;
-            document.getElementById("y2Pos").innerHTML = sessionMapData.players["p2"].yPos;
-            document.getElementById("randX").innerHTML = sessionMapData.vars["randX"];
-            document.getElementById("randY").innerHTML = sessionMapData.vars["randY"];
-            document.getElementById("playerCount").innerHTML = sessionMapData.vars["playerCount"];
-            document.getElementById("result1").innerHTML = sessionMapData.vars["result1"];
-            document.getElementById("result2").innerHTML = sessionMapData.vars["result2"];
-            document.getElementById("openTiles").innerHTML = sessionMapData.vars["openTiles"];
-            document.getElementById("active").innerHTML = sessionMapData.players["bot"].active;
-            document.getElementById("active1").innerHTML = sessionMapData.players["p1"].active;
-            document.getElementById("active2").innerHTML = sessionMapData.players["p2"].active;
-            document.getElementById("gameClock").innerHTML = sessionMapData.vars["gameClock"] / 10;
-            document.getElementById("clock").innerHTML = i / 10;
-            document.getElementById("drawMode").innerHTML = sessionMapData.drawMode["drawMode"];
-            await delay(100);
-        }
-        await delay(500);
-        document.getElementById("devClock").innerHTML = "<p onclick='devClock()'>Dev Clock Timer Up!</p>";
-        await delay(1000);
-        document.getElementById("devClock").innerHTML = "";
-    } else {
-        document.getElementById("devClock").innerHTML == "";
+    let clock = 0;
+    while (sessionMapData.vars["debugMenuOn"]) {
+        document.getElementById("xSize").innerHTML = sessionMapData.vars["xSize"];
+        document.getElementById("ySize").innerHTML = sessionMapData.vars["ySize"];
+        document.getElementById("gameClock").innerHTML = sessionMapData.vars["gameClock"] / 10;
+        document.getElementById("openTiles").innerHTML = sessionMapData.vars["openTiles"] + "/" + sessionMapData.vars["xSize"] * sessionMapData.vars["ySize"];
+        document.getElementById("playerCount").innerHTML = sessionMapData.vars["playerCount"];
+        document.getElementById("xPosP1").innerHTML = sessionMapData.players["p1"].xPos;
+        document.getElementById("yPosP1").innerHTML = sessionMapData.players["p1"].yPos;
+        document.getElementById("xPosP2").innerHTML = sessionMapData.players["p2"].xPos;
+        document.getElementById("yPosP2").innerHTML = sessionMapData.players["p2"].yPos;
+        document.getElementById("randX").innerHTML = sessionMapData.vars["randX"];
+        document.getElementById("randY").innerHTML = sessionMapData.vars["randY"];
+        document.getElementById("activeBot").innerHTML = sessionMapData.players["bot"].active == true ? "active" : "inactive"; 
+        document.getElementById("activeP1").innerHTML = sessionMapData.players["p1"].active == true ? "active" : "inactive";
+        document.getElementById("activeP2").innerHTML = sessionMapData.players["p2"].active == true ? "active" : "inactive";
+        document.getElementById("clock").innerHTML = clock / 10;
+        document.getElementById("drawMode").innerHTML = sessionMapData.drawMode.current["tool"] + " " + sessionMapData.drawMode.current["mode"] + " " + sessionMapData.drawMode.current["shape"] + " " + sessionMapData.drawMode.current["input"] + "<br><b>(X1, Y1):</b> &nbsp;(" + sessionMapData.drawMode["x1"] + ", " + sessionMapData.drawMode["y1"] + ") &nbsp;|&nbsp; <b>(X2, Y2):</b> &nbsp;(" + sessionMapData.drawMode["x2"] + ", " + sessionMapData.drawMode["y2"] + ")";
+        await delay(100);
+        clock += 1;
     }
 }
 
@@ -513,11 +507,22 @@ function moveTile(oldID, newID) {
         return true;
     // Target tile is entity tile, add to inventory, swap src, set old tile to space, increment openTiles
     } else if (isItem(newID)) {
-        // Potential to do something for consumables
+        // Checks if subject is Player 1
         if (subject == sessionMapData.assets["p1"]) {
-            addToInventory("p1", target);
+            // Potion effect
+            if (target == "assets/potion.png") {
+                booPotion();
+            } else {
+                addToInventory("p1", target);
+            }
+        // Checks if subject is Player 2
         } else if (subject == sessionMapData.assets["p2"]) {
-            addToInventory("p2", target);
+            // Potion effect
+            if (target == "assets/potion.png") {
+                booPotion();
+            } else {
+                addToInventory("p2", target);
+            }
         }
         swapTileSrc(oldID, newID);
         document.getElementById(oldID).src = sessionMapData.assets["space"];
@@ -567,7 +572,7 @@ function addToInventory(player, item) {
         sessionMapData.players[player].inventory[slotIndex].count += 1;
         updateInventory();
     } else {     
-        alert(player + " inventory full!");
+        announcer(player + " inventory full!");
     }
             
 }
@@ -748,8 +753,13 @@ function randomFoodType() {
 
 /* Map: Spawn random amount of food */
 function spawnFood() {
-    if (sessionMapData.vars["openTiles"] == 0) {alert("No open tiles!")};
+    if (sessionMapData.vars["openTiles"] == 0) {
+        announcer("No more open tiles!", 1)
+    };
     let amt = Math.floor(Math.random() * sessionMapData.vars["openTiles"] / 8);
+    if (amt == 0 && sessionMapData.vars["openTiles"] > 0) {
+        amt = 1;
+    }
     while (amt != 0) {
         let foodType = randomFoodType();
         document.getElementById(randomValidID()).src = foodType;
@@ -917,6 +927,7 @@ function xCross(tileSrc, x, y) {
 
 /* [Drawmode: Shape] Unfilled rectangle */
 function rect() {
+    sessionMapData.drawMode.current["tool"] == "draw" ? currentInputSrc = sessionMapData.assets["wall"] : sessionMapData.drawMode.current["tool"] == "erase" ? currentInputSrc = sessionMapData.assets["space"] : currentInputSrc = document.getElementById(sessionMapData.drawMode.current["input"] + "Icon").getAttribute("src");
     let lilX = sessionMapData.drawMode["x1"];
     let bigX = sessionMapData.drawMode["x2"];
     let lilY = sessionMapData.drawMode["y1"];
@@ -931,24 +942,24 @@ function rect() {
         lilY = sessionMapData.drawMode["y2"];
     }
     for (let x = lilX; x < bigX; x++) {
-        setTileSrc(sessionMapData.drawMode["inputTile"], x, lilY);
-        setTileSrc(sessionMapData.drawMode["inputTile"], x, bigY);
+        setTileSrc(currentInputSrc, x, lilY);
+        setTileSrc(currentInputSrc, x, bigY);
     }
     for (let y = lilY; y < bigY; y++) {
-        setTileSrc(sessionMapData.drawMode["inputTile"], lilX, y);
-        setTileSrc(sessionMapData.drawMode["inputTile"], bigX, y);
+        setTileSrc(currentInputSrc, lilX, y);
+        setTileSrc(currentInputSrc, bigX, y);
     }
-    setTileSrc(sessionMapData.drawMode["inputTile"], bigX, bigY)
+    setTileSrc(currentInputSrc, bigX, bigY)
     // Handle bigger than size;
     // Handle click placement mode
 }
 
 /* [Helper] rect() corner A */
 function cornerA(x, y) {
+    sessionMapData.drawMode.current["tool"] == "draw" ? currentInputSrc = sessionMapData.assets["wall"] : sessionMapData.drawMode.current["tool"] == "erase" ? currentInputSrc = sessionMapData.assets["space"] : currentInputSrc = document.getElementById(sessionMapData.drawMode.current["input"] + "Icon").getAttribute("src");
     sessionMapData.drawMode["x1"] = x;
     sessionMapData.drawMode["y1"] = y;
-    setTileSrc(sessionMapData.drawMode["inputTile"], x, y);
-    setDrawMode("clickcbox");
+    setTileSrc(currentInputSrc, x, y);
 }
 
 /* [Helper] rect() corner B */
@@ -956,7 +967,6 @@ function cornerB(x, y) {
     sessionMapData.drawMode["x2"] = x;
     sessionMapData.drawMode["y2"] = y;
     rect();
-    setDrawMode("clickbox");
 }
 
 /* [Helper] rect() corner A previewer */
@@ -989,6 +999,7 @@ function flipper() {
     } else if (document.getElementById("flipIcon").getAttribute("src") == "assets/drawmode/flipB.png") {
         document.getElementById("flipIcon").src = "assets/drawmode/flipA.png";
     }
+    announcer("Tiles flipped!")
 }
 
 /* [Helper] flipper() flips single tile from wall to space or vice versa */
@@ -1007,9 +1018,17 @@ function flipTile(x, y) {
 /* ####################################################[ DRAWMODE/STYLING ]##################################################### */
 /* ############################################################################################################################# */
 
+/* DrawMode: Sets all 4 settings at once (tool, mode, shape, input) */
+function setDrawMode() {
+    setTool(sessionMapData.drawMode.current["tool"]);
+    setMode(sessionMapData.drawMode.current["mode"]);
+    setShape(sessionMapData.drawMode.current["shape"]);
+    setInput(sessionMapData.drawMode.current["input"]);
+}
+
 /* DrawMode: Set DrawMode */
 function updateDrawMode() {
-    const {tool, mode, shape, input} = sessionMapData.drawMode;
+    const {tool, mode, shape, input} = sessionMapData.drawMode.current;
     const tileSrc = tool === "erase"
         ? sessionMapData.assets["space"]
         : tool === "input"
@@ -1026,12 +1045,12 @@ function updateDrawMode() {
         dLineB: (x, y) => dLineB(tileSrc, x, y),
         xCross: (x, y) => xCross(tileSrc, x, y),
         box: (x, y) => {
-            if (sessionMapData.drawMode["boxOn"]) {
+            if (sessionMapData.drawMode["boxOn"] == false) {
                 cornerA(x, y);
-                sessionMapData.drawMode["boxOn"] = false;
+                sessionMapData.drawMode["boxOn"] = true;
             } else {
                 cornerB(x, y);
-                sessionMapData.drawMode["boxOn"] = true;
+                sessionMapData.drawMode["boxOn"] = false;
             }
         }
     };
@@ -1045,6 +1064,8 @@ function updateDrawMode() {
             tile.onmouseover = null;
             if (drawShape && eventName && !(shape === "box" && mode === "hover")) {
                 tile[eventName] = () => drawShape(j, i);
+            } else if (shape === "box" && mode === "hover") {
+                announcer("Warning: Box shape not available in hover mode.")
             }
         }
     }
@@ -1052,47 +1073,63 @@ function updateDrawMode() {
 
 /* DrawMode: Set tool menu */
 function setTool(tool) {
-    // Update internal mode variables
-    sessionMapData.drawMode["lastTool"] = sessionMapData.drawMode["tool"];
-    sessionMapData.drawMode["tool"] = tool;
-    // Clear last mode icon style, update current mode icon style
-    document.getElementById(sessionMapData.drawMode["lastTool"] + "Icon").style = "";
-    document.getElementById(sessionMapData.drawMode["tool"] + "Icon").style = "border: 1px, red, solid; background-color: #D3D3D3";
+    // Clear last tool icon style
+    document.getElementById(sessionMapData.drawMode.last["tool"] + "Icon").style = "";
+    // Update internal tool variables
+    sessionMapData.drawMode.last["tool"] = sessionMapData.drawMode.current["tool"];
+    sessionMapData.drawMode.current["tool"] = tool;
+    // Clear last tool icon style
+    document.getElementById(sessionMapData.drawMode.last["tool"] + "Icon").style = "";
+    // Update current tool icon style
+    document.getElementById(sessionMapData.drawMode.current["tool"] + "Icon").style = "border: 1px, red, solid; background-color: #D3D3D3";
+    // Display inputTileMenu if input tool selected
     tool === "input" ? document.getElementById("inputTileMenu").style.display = "block" : document.getElementById("inputTileMenu").style.display = "none"; 
+    // Actually updates board function to new settings
     updateDrawMode();
 }
 
 /* DrawMode: Set mode menu */
 function setMode(mode) {
+    // Clear last mode icon style
+    document.getElementById(sessionMapData.drawMode.last["mode"] + "Icon").style = "";
     // Update internal mode variables
-    sessionMapData.drawMode["lastMode"] = sessionMapData.drawMode["mode"];
-    sessionMapData.drawMode["mode"] = mode;
-    // Clear last mode icon style, update current mode icon style
-    document.getElementById(sessionMapData.drawMode["lastMode"] + "Icon").style = "";
-    document.getElementById(sessionMapData.drawMode["mode"] + "Icon").style = "border: 1px, red, solid; background-color: #D3D3D3";
+    sessionMapData.drawMode.last["mode"] = sessionMapData.drawMode.current["mode"];
+    sessionMapData.drawMode.current["mode"] = mode;
+    // Clear last mode icon style
+    document.getElementById(sessionMapData.drawMode.last["mode"] + "Icon").style = "";
+    // Update current mode icon style
+    document.getElementById(sessionMapData.drawMode.current["mode"] + "Icon").style = "border: 1px, red, solid; background-color: #D3D3D3";
+    // Actually updates board function to new settings
     updateDrawMode();
 }
 
 /* DrawMode: Set shape menu */
 function setShape(shape) {
-    // Update internal mode variables
-    sessionMapData.drawMode["lastShape"] = sessionMapData.drawMode["shape"];
-    sessionMapData.drawMode["shape"] = shape;
-    // Clear last mode icon style, update current mode icon style
-    document.getElementById(sessionMapData.drawMode["lastShape"] + "Icon").style = "";
-    document.getElementById(sessionMapData.drawMode["shape"] + "Icon").style = "border: 1px, red, solid; background-color: #D3D3D3";
+    // Clear last shape icon style
+    document.getElementById(sessionMapData.drawMode.last["shape"] + "Icon").style = "";
+    // Update internal shape variables
+    sessionMapData.drawMode.last["shape"] = sessionMapData.drawMode.current["shape"];
+    sessionMapData.drawMode.current["shape"] = shape;
+    // Clear last shape icon style
+    document.getElementById(sessionMapData.drawMode.last["shape"] + "Icon").style = "";
+    // Update current mode shape style
+    document.getElementById(sessionMapData.drawMode.current["shape"] + "Icon").style = "border: 1px, red, solid; background-color: #D3D3D3";
+    // Actually updates board function to new settings
     updateDrawMode();
 }
 
 /* DrawMode: Set input tile menu */
 function setInput(input) {
-    // Update internal mode variables
-    sessionMapData.drawMode["lastInput"] = sessionMapData.drawMode["input"];
-    sessionMapData.drawMode["input"] = input;
-    // Clear last mode icon style, update current mode icon style
-    document.getElementById(sessionMapData.drawMode["lastInput"] + "Icon").style = "";
-    document.getElementById(sessionMapData.drawMode["input"] + "Icon").style = "border: 1px, red, solid; background-color: #D3D3D3";
-    // TODO: Call drawmode function to update
+    // Clear last input icon style
+    document.getElementById(sessionMapData.drawMode.last["input"] + "Icon").style = "";
+    // Update internal input variables
+    sessionMapData.drawMode.last["input"] = sessionMapData.drawMode.current["input"];
+    sessionMapData.drawMode.current["input"] = input;
+    // Clear last input icon style
+    document.getElementById(sessionMapData.drawMode.last["input"] + "Icon").style = "";
+    // Update current input icon style
+    document.getElementById(sessionMapData.drawMode.current["input"] + "Icon").style = "border: 1px, red, solid; background-color: #D3D3D3";
+    // Actually updates board function to new settings
     updateDrawMode();
 }
 
@@ -1163,7 +1200,15 @@ async function flashTiles() {
 /* ######################################################[ EXPERIMENTAL/FUN ]################################################### */
 /* ############################################################################################################################# */
 
-/* Fun: Monster Scare */
+/* Fun: Give fun message to boo effect */
+async function booPotion() {
+    boo();
+    announcer("The spooky potion is making everyone feel funny!", 15)
+    await delay(15000);
+    stopBoo();
+}
+
+/* Helper: Begins Boo Visuals and Decreases Movement Cooldown (Speed Effect) */
 function boo() {
     sessionMapData.assets["p1"] = "assets/blackMonster.png";
     sessionMapData.assets["p2"] = "assets/whiteMonster.png";
@@ -1180,6 +1225,7 @@ function boo() {
     sessionMapData.vars["MOVE_COOLDOWN_MS"] = 75;
 }
 
+/* Helper: Stops Boo Visuals and Returns Movement Cooldown (Speed Effect) */
 function stopBoo() {
     sessionMapData.assets["p1"] = "assets/redMonsterDown.png";
     sessionMapData.assets["p2"] = "assets/blueMonsterDown.png";
@@ -1195,6 +1241,8 @@ function stopBoo() {
     }
     sessionMapData.vars["MOVE_COOLDOWN_MS"] = 150;
 }
+
+
 
 /* ############################################################################################################################# */
 /* ######################################################[ WORK-IN-PROGRESS ]################################################### */
@@ -1236,16 +1284,6 @@ function infect(tileType, amt, x, y) {
     }
 }
 
-function togglePosHint() {
-    const elements = document.getElementsByClassName("posHint");
-    Array.from(elements).forEach(element => {
-        if (element.style.display === "block") 
-            element.style.display = "none";
-        else 
-            element.style.display = "block";
-    });
-}
-
 /* Helper: Returns output Array of 8 tileIDs surrounding input tileID */
 function circleAround(tileID) {
     let circleTileIDs = [];
@@ -1273,12 +1311,34 @@ function placePreview(tileID) {
 /* ################################################[ DEVELOPMENT/GLOBAL HELPERS ]############################################### */
 /* ############################################################################################################################# */
 
-/* Helper: Delay Promise, Needs Async */
+/* Development: Toggles position coordinate hint for board, triggered by F3 */
+function togglePosHint() {
+    const elements = document.getElementsByClassName("posHint");
+    Array.from(elements).forEach(element => {
+        if (element.style.display === "block") 
+            element.style.display = "none";
+        else 
+            element.style.display = "block";
+    });
+}
+
+/* Global: Announcer box notification */
+async function announcer(message, seconds) {
+    let timeLeft = seconds || 3;
+    while (timeLeft != 0) {
+        document.getElementById("announcer").innerHTML = message + " (" + timeLeft + ")";
+        timeLeft--;
+        await delay(1000);
+    }
+    document.getElementById("announcer").innerHTML = "&nbsp;";
+}
+
+/* Global: Delay Promise, Needs Async */
 function delay(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-/* Helper: Resets Variables */
+/* Global: Resets Variables */
 function resetVars() {
     sessionMapData.players["p1"].xPos = undefined;
     sessionMapData.players["p1"].yPos = undefined;
@@ -1292,6 +1352,38 @@ function resetVars() {
     sessionMapData.players["p2"].active = false;
     document.getElementById("result1").innerHTML = sessionMapData.vars["result1"];
     document.getElementById("result2").innerHTML = sessionMapData.vars["result2"];
+}
+
+/* Helper: Returns element ID or null; error handling for better key presses */
+function getTileElement(tileID) {
+    const element = document.getElementById(tileID);
+    if (!element) {
+        console.warn("Tile element not found for id: " + tileID);
+        return null;
+    }
+    return element;
+}
+
+/* Helper: Returns source or null; error handling for better key presses */
+function getSrc(tileID) {
+    const element = getTileElement(tileID);
+    if (!element) return null;
+    return element.getAttribute("src");
+}
+
+/* Helper: Calculates New Position */
+function getNewPos(x, y, keymap) {
+    let newX = x;
+    let newY = y;
+    if (keymap.up && keysPressed[keymap.up] && y > 0) 
+        newY = y - 1;
+    else if (keymap.down && keysPressed[keymap.down] && y < sessionMapData.vars["ySize"] - 1) 
+        newY = y + 1;
+    else if (keymap.left && keysPressed[keymap.left] && x > 0) 
+        newX = x - 1;
+    else if (keymap.right && keysPressed[keymap.right] && x < sessionMapData.vars["xSize"] - 1) 
+        newX = x + 1;
+    return {newX, newY};
 }
 
 /* ############################################################################################################################# */
@@ -1311,6 +1403,9 @@ document.addEventListener('keydown', (move) => {
         flashTiles();
     }
     if (move.key === 'F3') {
+        toggleDebugMenu();
+    }
+    if (move.key === 'F2') {
         togglePosHint();
     }
     // Player 1 Keys
@@ -1338,42 +1433,10 @@ document.addEventListener('keyup', (move) => {
     keysPressed[move.key] = false;
 });
 
-/* Helper: Returns element ID or null; error handling for better key presses */
-function getTileElement(tileID) {
-    const element = document.getElementById(tileID);
-    if (!element) {
-        console.warn("Tile element not found for id: " + tileID);
-        return null;
-    }
-    return element;
-}
-
-/* Helper: Returns source or null; error handling for better key presses */
-function getSrc(tileID) {
-    const element = getTileElement(tileID);
-    if (!element) return null;
-    return element.getAttribute("src");
-}
-
 /* Game Event Listener: for Monster Sandbox - Updates for Color Picker */
 document.addEventListener('change', (event) => {
     paintOn(document.getElementById('colorPicker').value);
 });
-
-/* Helper: Calculates New Position */
-function getNewPos(x, y, keymap) {
-    let newX = x;
-    let newY = y;
-    if (keymap.up && keysPressed[keymap.up] && y > 0) 
-        newY = y - 1;
-    else if (keymap.down && keysPressed[keymap.down] && y < sessionMapData.vars["ySize"] - 1) 
-        newY = y + 1;
-    else if (keymap.left && keysPressed[keymap.left] && x > 0) 
-        newX = x - 1;
-    else if (keymap.right && keysPressed[keymap.right] && x < sessionMapData.vars["xSize"] - 1) 
-        newX = x + 1;
-    return {newX, newY};
-}
 
 /* Game Event Listener: for Monster Sandbox - Movement Updater */
 function update(timestamp) {

@@ -13,9 +13,9 @@
         <h1>Monster Tiles Sandbox v0.1</h1>
     </div>
 
-    <!--ALERT BOX-->
+    <!--ANNOUNCER BOX-->
     <div class="txtcenter">
-        <p id="alert">&nbsp;</p>
+        <p id="announcer">&nbsp;</p>
     </div>
 
     <!--HORIZONTAL MAIN CENTER PANE-->
@@ -68,7 +68,7 @@
         <!--MIDDLE | JS-GENERATED BOARD-->
         <div id="board" style="background-image: 'assets/redMonsterDown.png'"></div>
 
-        <!--PLAYER 2 MENU-->
+        <!--RIGHT | PLAYER 2 MENU-->
         <div style="display:flex; flex-direction: column; align-items: center;">
             <div id="score2" class="scoreBoard"><img id="score2img" class="profile" src="assets/blueMonsterDown.png" onmouseover="boo()" onmouseout="stopBoo()"><span><b><u>Player 2</u></b></span><br><span id="result2">0</span></div>
             <div id="inventory2">
@@ -100,7 +100,7 @@
 
     </div>
 
-    <!--JS-GENERATED TOOLBOX FOR DEVMODE -->
+    <!--JS-GENERATED TOOLBOX FOR SANDBOX MODE -->
     <div id="toolbox" class="center"></div>
 
     <!--COLOR PICKER FOR PAINT-->
@@ -112,8 +112,7 @@
     <!--START BUTTON-->
     <div class="center" style="display: block"><span id="start"><button onclick="start()">Start</button></span></div>
 
-    <!--TOGGLE DEBUG MENU BUTTON-->
-    <div class="center"><button onclick="toggleDebugMenu()"></button></div>
+    <!--JS-GENERATED DEBUG MENU-->
     <div id="debugMenu"></div>
 
     <!--DRAW MODE MENU-->

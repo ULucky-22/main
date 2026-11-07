@@ -65,9 +65,9 @@ td img {
   border: 0.2vw solid black;
 }
 
-#alert {
+#announcer {
   border: 0.1vw solid black;
-  width: 25%;
+  width: 35%;
 }
 
 #score1 {
@@ -80,19 +80,17 @@ td img {
   color: white;
 }
 
-#debug:hover {
-  color: black;
-}
-
-#devClock p {
-  margin: 0;
-  font-size: 0.7vw;
-}
-
 #debugMenu {
   position: absolute;
   top: 10px;
   left: 10px;
+  display: none;
+  width: 15vw;
+}
+
+#debugMenu p {
+  margin: 0;
+  font-size: 0.7vw;
 }
 
 #title h1 {

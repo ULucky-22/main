@@ -20,7 +20,8 @@ paint, add players, and more!
 - Design and save game to JSON or local session
 
 [Developer Mode]
-- Debug Menu, Press F3 for position helper tool
+- New! Press F3 to view the Debug Menu
+- New! Press F2 to view the Position Coordinates Helper
 
 [Planned]
 - Better tiles
